@@ -1,4 +1,4 @@
-# Maze-runner
+# Micromouse
 Micromouse maze solver  
 
 ## Getting started 
