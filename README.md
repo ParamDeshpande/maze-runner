@@ -1,5 +1,5 @@
 # Micromouse
-Micromouse maze solver  
+dub "death_cure".Just another maze-runner.
 
 ## Getting started 
 For [technoxian](https://www.technoxian.com/) competetion 2019 
