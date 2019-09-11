@@ -1,0 +1,32 @@
+Prog conventions 
+
+1. main.h
+/*THIS file contains all the info related to registers, timers, OSC freq ,typedefs and interrupts */
+
+2. File.h
+/*THIS file contains only  global variables , function prototypes ,  no other header file should ever be included in this header file . Ever. */
+
+3.main.c
+/*
+Should always be of this format when including files
+
+ "Main.h"
+ "Port.h"
+ "Simple_EOS.h"	// Or any other OS file
+
+ "File1.h"
+ ...
+
+*/
+
+4.file.c
+/*
+Should primarily include with 
+main.h
+port.h
+
+then with the file header
+file.h
+otherfileheaders.h
+
+*/

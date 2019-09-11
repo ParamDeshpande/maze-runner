@@ -1,0 +1,50 @@
+IR Emmiter Single 
+Preferably used for single / side turns
+
+Emmiter Serial 
+To be used for diagonal IR led pairs
+
+IR receiver
+80 microsec *micro* cooldown period
+
+Ideally send IR pulses at 60 *micro*sec and measure IR receiver value during that at the ~end of pulse where PEAK value exists.
+Wait 80 *micro*sec before firing the NEXT IR sensor.
+
+t = 0			60				140			200
+TX1 Fired 				 
+RX1 		Measured
+					cooldown	
+TX2  							Fired
+RX2  									Measured
+
+Gyro Zero Point Drift 
+Keep gyro stable for 50000(50K values).(Sample that many values).
+Measure /integrate to get a rough Angle (let it be in rads and dont simplify it(ie dont assume a cycle after 2PI values)).
+Let that VVLarge angle be Y.
+Later when calc angle 
+Use (sampled_value*50K - Y)/50K as your measured angle.
+
+
+Controller 
+
+Lateral(rep by w) controller 
+longitudinal(rep by x) controller
+
+Both controllers are used to control motors 
+
+during st run 
+wSpeed = 0;
+xSpeed = some constant;
+
+during pivot turn
+xSpeed = 0;
+wSpeed = some constant;
+
+during curved turn
+xSpeed = some constant;
+wSpeed = some constant;
+
+
+
+
+

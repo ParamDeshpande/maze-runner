@@ -1,0 +1,55 @@
+CAPTAINS_LOG
+
+23/08/19
+Epoch for software arch.
+
+24/08/19
+Received ir sensors.
+Completed IMU calibration interface.
+
+28/08/19
+All tasks listings.
+
+29/08/19
+8:52 AM
+Controller Epoch
+8:56 PM
+Encoder testing successful.
+someone burned out 1 prototype motor.
+
+30/08/19
+6.32 PM
+IR sensors testing init.
+8.02 PM
+IRs are fucked up. Shows 5v op accross LEDs no rev bias current.
+
+3/09/19
+Revised design issues, Green ye youtube guy was a huge help.
+
+4/09/19
+Aimed to complete IMU yaw values and sensor fusion and
+look into Software OS (pref sEOS or systic timers).
+9.34pm
+Dont know how my code is running the first time ?
+Code and design completed for kalman6d used matlabC coder.
+(now you know how :) )
+
+5/09/19
+Corrected/modified kalman code Successfully imported and run kalman code in main.ino
+Looked into curved turnings.
+Research on timers.
+Thinking of moving to standard embedded IDEs instead of Arduino IDE for timer simplicity and using sEOS or systic time settings.
+
+6/09/19
+12.20pm
+Going forward with arduino IDE, not using embedded codes.
+New changes in kalman code reverifying needed.
+
+10/09/19
+10 days to competetion
+Completed IR firing pattern code.
+Purchased batteries 850mAhx2 ~40C, motor driver ICs l293d x2, Bought new IR pairs(x10) for IR sensor module.
+
+11/09/19
+9 days to go
+Resolved IR header object issues.
