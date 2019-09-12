@@ -31,7 +31,6 @@ static double yaw_Speed = 0 ;
 
 void const_Speed(void){
     
-    
     if(current_vel < desired_vel){
         current_vel += desired_x_acc*delT;
     }

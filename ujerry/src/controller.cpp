@@ -10,6 +10,8 @@ Motor rightMotor(rme,rmi1,rmi2);
 Motor leftMotor(lme,lmi1,lmi2);
 
 
+
+//Private variables
 double x = 0;
 double x_vel = 0 ;
 double x_acc = 0 ;
@@ -25,6 +27,14 @@ double w_Error = 0;
 
 double x_Error = 0;
 double ang_Error = 0;
+
+
+//global variables
+double current_x = 0;
+double current_vel = 0;
+double current_x_acc = 0 ;
+double current_yaw = 0 ;
+double current_w = 0 ;
 
 void main_controller(double desired_vel, double desired_w ){
 

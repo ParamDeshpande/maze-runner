@@ -7,11 +7,11 @@
 // By Nigel Webb, November 2014
 
 /* 
-    Connections Encoder 2
+    Connections Encoder 2 aka RIGHT
     PA_0 = Encoder_2 A   A0
     PA_1 = Encoder_2 B   A1
    
-    Connections Encoder 1   
+    Connections Encoder 1  aka LEFT 
     PA_8 = Encoder_1 A   D7
     PA_9 = Encoder_1 B   D8 
 */
@@ -77,8 +77,10 @@ void EncoderInitialise_TIM1(void) {
     TIM1->CNT = 0x0000;  //reset the counter before we use it  
 }
 
+double left_enc_dist =  0;
+double right_enc_dist = 0;
 
-int read_encoder() {
+void read_encoder() {
     
     EncoderInitialise_TIM2() ;
     EncoderInitialise_TIM1() ;
@@ -89,12 +91,33 @@ int read_encoder() {
         // Print Encoder Quadrature count to debug port every 0.5 seconds
         EncoderPosition_TIM1 = TIM1->CNT ; // Get current position from Encoder
         EncoderPosition_TIM2 = TIM2->CNT ; // Get current position from Encoder
-        printf("Left count = %i \n", EncoderPosition_TIM1); // Position of Left Encoder
+        left_enc_dist = EncoderPosition_TIM1;
+        right_enc_dist = EncoderPosition_TIM2;
+        
+        /*printf("Left count = %i \n", EncoderPosition_TIM1); // Position of Left Encoder
         Serial.print("Left count =");
         Serial.println(EncoderPosition_TIM1);
 
         Serial.print("right count =");
+        Serial.println(EncoderPosition_TIM2);
+        */
+        //delay(10);//10Ms delay added by Param   
+}       
+#ifdef DEBUG
+void display_encoder_counts(void){
+        Serial.print("Left count =");
         Serial.println(EncoderPosition_TIM1);
 
-        //delay(10);//10Ms delay added by Param   
+        Serial.print("right count =");
+        Serial.println(EncoderPosition_TIM2);
 }
+
+
+void display_encoder_distance(void){
+        Serial.print("Left distance =");
+        Serial.println(left_enc_dist);
+
+        Serial.print("right distance =");
+        Serial.println(right_enc_dist);
+}
+#endif // DEBUG

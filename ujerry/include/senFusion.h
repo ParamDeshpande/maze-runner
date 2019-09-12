@@ -11,8 +11,8 @@
 #include "../include/kalman6d_initialize.h"
 
 
-
-int kalman_testing(void);
+void init_STATES(void);
+void kalman_Magic(void);
 
 #endif // !SEN_FUSION_H#define SEN_FUSION_H
 

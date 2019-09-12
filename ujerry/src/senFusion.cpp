@@ -38,111 +38,57 @@
 #include "../include/senFusion.h"
 #include "../include/kalman6d_terminate.h"
 #include "../include/kalman6d_initialize.h"
-
+#include "../include/imu.h"
 
 // Function Declarations
-static void argInit_2x1_real_T(double result[2]);
-static void argInit_5x1_real_T(double result[5]);
-static void argInit_5x5_real_T(double result[25]);
-static void argInit_6x1_real_T(double result[6]);
-static double argInit_real_T();
-static void main_kalman6d();
+double inputs[2] = {desired_vel,desired_w};
 
-// Function Definitions
+double measurements[6] = {left_enc_dist,right_enc_dist,accelX,yawGyro_rads,yawAccelero_rads,yawMag_rads};
 
-//
-// Arguments    : double result[2]
-// Return Type  : void
-//
-static void argInit_2x1_real_T(double result[2])
-{
-  double result_tmp;
+double previous_states[5] = {0};
 
-  // Loop over the array to initialize each element.
-  // Set the value of the array element.
-  // Change this value to the value that the application requires.
-  result_tmp = argInit_real_T();
-  result[0] = result_tmp;
+double cov_Matrix_Old[25] = {0};
 
-  // Set the value of the array element.
-  // Change this value to the value that the application requires.
-  result[1] = result_tmp;
+double uncertainty_Vector[5] = {calc_var_x,calc_var_vel,calc_var_x_acc,calc_var_yaw,calc_var_w};
+
+double noise_Vector[6] = {measure_var_l_enc,measure_var_r_enc,measure_var_accelX,measure_var_yawGyro,measure_var_yawAccel,measure_var_yawMag};
+
+
+double current_states[5] = {current_x,current_vel, current_x_acc, current_yaw, current_w};
+
+double cov_Matrix_Current[25] = {0};
+
+//Prototype
+void main_kalman6d();
+void init_KALMAN(void);
+static void update_kalman_vars(void);
+
+void init_STATES(void){
+
+  //HOPE THIS FUNCTION WORKS!!!
+  FILLARRAY(inputs,0);
+  FILLARRAY(measurements,0);
+  FILLARRAY(previous_states,0);
+  FILLARRAY(current_states,0);
+
 }
 
-//
-// Arguments    : double result[5]
-// Return Type  : void
-//
-static void argInit_5x1_real_T(double result[5])
-{
-  int idx0;
+static void update_kalman_vars(void){
 
-  // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 5; idx0++) {
-    // Set the value of the array element.
-    // Change this value to the value that the application requires.
-    result[idx0] = argInit_real_T();
-  }
+  inputs[0] = desired_vel;
+  inputs[1] = desired_w;
+
+  measurements[0] = left_enc_dist;
+  measurements[1] = right_enc_dist;
+  measurements[2] = accelX;
+  measurements[3] = yawGyro_rads;
+  measurements[4] = yawAccelero_rads;
+  measurements[5] = yawMag_rads;
 }
 
-//
-// Arguments    : double result[25]
-// Return Type  : void
-//
-static void argInit_5x5_real_T(double result[25])
+void main_kalman6d()
 {
-  int idx0;
-  int idx1;
-
-  // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 5; idx0++) {
-    for (idx1 = 0; idx1 < 5; idx1++) {
-      // Set the value of the array element.
-      // Change this value to the value that the application requires.
-      result[idx0 + 5 * idx1] = argInit_real_T();
-    }
-  }
-}
-
-//
-// Arguments    : double result[6]
-// Return Type  : void
-//
-static void argInit_6x1_real_T(double result[6])
-{
-  int idx0;
-
-  // Loop over the array to initialize each element.
-  for (idx0 = 0; idx0 < 6; idx0++) {
-    // Set the value of the array element.
-    // Change this value to the value that the application requires.
-    result[idx0] = argInit_real_T();
-  }
-}
-
-//
-// Arguments    : void
-// Return Type  : double
-//
-static double argInit_real_T()
-{
-  return 0.0;
-}
-
-//
-// Arguments    : void
-// Return Type  : void
-//
-static void main_kalman6d()
-{
-  double dv0[2];
-  double dv1[6];
-  double dv2[5];
-  double dv3[25];
-  double dv4[5];
-  double dv5[6];
-  double XHat_Updated[5];
-  double cov_Updated[25];
+  update_kalman_vars();
 
   // Initialize function 'kalman6d' input arguments.
   // Initialize function input argument 'U'.
@@ -152,14 +98,14 @@ static void main_kalman6d()
   // Initialize function input argument 'uncertVect'.
   // Initialize function input argument 'noiseVect'.
   // Call the entry-point 'kalman6d'.
-  argInit_2x1_real_T(dv0);
-  argInit_6x1_real_T(dv1);
-  argInit_5x1_real_T(dv2);
-  argInit_5x5_real_T(dv3);
-  argInit_5x1_real_T(dv4);
-  argInit_6x1_real_T(dv5);
-  kalman6d(dv0, dv1, dv2, dv3, dv4, dv5, argInit_real_T(), XHat_Updated,
-           cov_Updated);
+ kalman6d(inputs, measurements, previous_states, cov_Matrix_Old, uncertainty_Vector,noise_Vector , delT, current_states,
+           cov_Matrix_Current);
+
+  memcpy( previous_states, current_states, sizeof(previous_states) );
+  memcpy(cov_Matrix_Old, cov_Matrix_Current, sizeof(cov_Matrix_Old) );
+  //previous_states[5] = current_states[5];
+  //cov_Matrix_Old[25] = cov_Matrix_Current[25];
+
 }
 
 //
@@ -167,20 +113,9 @@ static void main_kalman6d()
 //                const char * const argv[]
 // Return Type  : int
 //
-int kalman_testing(void)
+void kalman_Magic(void)
 {
-  // Initialize the application.
-  // You do not need to do this more than one time.
-  kalman6d_initialize();
-
-  // Invoke the entry-point functions.
-  // You can call entry-point functions multiple times.
   main_kalman6d();
-
-  // Terminate the application.
-  // You do not need to do this more than one time.
-  kalman6d_terminate();
-  return 0;
 }
 
 //

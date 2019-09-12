@@ -3,7 +3,9 @@
 
 #define OR || 
 #define AND &&
-
+#define builtin_led_Pin D13
+//Need analog pin
+#define battery_Pin 0
 //Left motor Pin_Nos 
 #define rme D3
 #define rmi1 D2
@@ -26,7 +28,6 @@
 
 #define side_l_tx_Pin_No 0
 #define side_r_tx_Pin_No 0
-
 
 #define front_r_rx_Pin_No A0
 #define front_l_rx_Pin_No A1

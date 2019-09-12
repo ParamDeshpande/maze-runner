@@ -2,6 +2,7 @@
 #include "../include/port.h"
 #include "../include/constants.h"
 
+#include "../include/battery_voltage.h"
 #include "../include/imu.h"
 #include "../include/senFusion.h"
 #include "../include/controller.h"
@@ -9,29 +10,65 @@
 #include "../include/speed_profiler.h"
 #include "../include/encoder.h"
 
-void setup()
-{
-  Serial.begin(115200);
-  //while(!Serial) {}
-  init_IMU();
-}
+#ifdef DEBUG
+  void setup()
+  {
+    Serial.begin(115200);
+    while(!Serial) {}
+    init_IMU();
+    init_STATES();
+  }
 
-void loop()
-{
+  void loop()
+  {
 
-  IR_module.fire_and_get();
-  IR_module.display_IR();
-  
-  refresh_IMU();
-  display_IMU();
+    IR_module.fire_and_get();
+    refresh_IMU();
+    display_IMU();
 
-  //desired_vel = 10;
+    read_encoder();
+    display_encoder_counts(); 
+    display_encoder_distance();   
+    kalman_Magic();
+    
+    
 
-  //const_Speed();
-  read_encoder();
-  //kalman_testing();
-}
+    desired_vel = 10;
 
+    const_Speed();
+    kalman_testing();
+  }
+
+
+
+
+#endif // DEBUG
+
+
+
+//Actual Final run code.
+#ifndef DEBUG
+  void setup()
+  {
+    Serial.begin(115200);
+    while(!Serial) {}
+    init_IMU();
+    init_STATES();
+  }
+
+  void loop()
+  {
+
+    IR_module.fire_and_get();
+    refresh_IMU();
+    read_encoder();
+    
+    kalman_Magic();
+    
+    //const_Speed();
+    //kalman_testing();
+  }
+#endif 
 /*
 *Get sensor ops 
           ...IR Done.. 

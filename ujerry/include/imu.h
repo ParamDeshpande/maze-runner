@@ -16,4 +16,10 @@ void refresh_IMU(void) ;
 void calc_RollPitch(void);
 void yawMag_update(void) ;
 
+//
+//extern double accelX;
+//extern double yawGyro_rads;
+//extern double yawAccelero_rads;
+
+
 #endif // !IMU_H

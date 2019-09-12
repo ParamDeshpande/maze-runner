@@ -53,3 +53,12 @@ Purchased batteries 850mAhx2 ~40C, motor driver ICs l293d x2, Bought new IR pair
 11/09/19
 9 days to go
 Resolved IR header object issues.
+Resolved IR hardware issue, entire batch of IR leds were soldered reverse.
+Programmed basic IO for kalman and other vars via global vars.
+
+12/09/19
+8 days to go.
+Looked into Floodfill algorithm / advanced algos for better solving .See references.
+Looked 3d printing skid pads.
+voltage checker algo.
+

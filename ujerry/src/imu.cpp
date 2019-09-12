@@ -11,9 +11,9 @@
 
   MPU9250 IMU(Wire,0x68);
   int status;
-  float yawGyro_rads; 
-  float yawMag_rads;
-
+  double yawGyro_rads = 0; 
+  double yawMag_rads = 0;
+  double yawAccelero_rads = 0;
 
 void init_IMU(void) {
 
@@ -75,18 +75,17 @@ All in all 2 kalmans
 
 
 
-float accelX;
-float accelY;
-float accelZ;
-float magReadX;
-float magReadY;
-float magReadZ;
-
-float roll;
-float pitch;
-float yaw;
-float mag_x;
-float mag_y;
+double accelX;
+double accelY;
+double accelZ;
+double magReadX;
+double magReadY;
+double magReadZ;
+double roll;
+double pitch;
+double yaw;
+double mag_x;
+double mag_y;
 
 void refresh_IMU(void) {
   IMU.readSensor();
@@ -107,9 +106,9 @@ void calc_RollPitch(void){
        }
         
 void yawMag_update(void){
-    
+    calc_RollPitch();
     mag_x = magReadX*cos(pitch) + magReadY*sin(roll)*sin(pitch) + magReadZ*cos(roll)*sin(pitch);
     mag_y = magReadY * cos(roll) - magReadZ * sin(roll);
-    yaw = 180 * atan2(-mag_y,mag_x)/M_PI;
+    yawMag_rads = 180 * atan2(-mag_y,mag_x)/M_PI;
 
 }
