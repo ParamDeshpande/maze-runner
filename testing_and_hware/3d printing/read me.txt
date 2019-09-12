@@ -1,0 +1,5 @@
+.s3g file for makerbot firmware older than 7.0
+.x3g file is for makerbot firmware 7.0 or later
+.gcode is G-code file
+.stl is STL file
+holes for wheel are designed for makerbot with default trace thickness, the hole might be too big if print with shapeways
