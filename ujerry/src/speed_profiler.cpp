@@ -17,7 +17,6 @@ For pivot turn I would be decreasing to 50% and increasing to 90% capacities of 
 
 For curve turns need explicit parameters.
 
-
 */
 //wSpeed (rads / sec) YEP
 //x_Speed (m/s)    YEP
@@ -66,6 +65,10 @@ void curved_turn_left(void){
 
 void curved_turn_right(void){
 
+}
+
+void turn_around(void){
+    main_controller(0,DEG_2_RADS(-180));
 }
 
 //*/

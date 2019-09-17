@@ -1,15 +1,51 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+
+#define TRUE true
+#define FALSE false
+
+extern int front_left_IR  ;  
+extern int front_right_IR ;  
+extern int diag_left_IR   ;  
+extern int diag_right_IR  ;  
+extern int side_left_IR   ;  
+extern int side_right_IR  ;  
+
+
+
+
 //Super important dont change UL.
 
 #define FILLARRAY(a,n) a[0]=n, memcpy( ((char*)a)+sizeof(a[0]), a, sizeof(a)-sizeof(a[0]) );
+
+
+#define DEG_2_RADS(degrees) degrees*M_PI/180.0f
 
 #define angleSumFiftyK 12000UL //DO edit after analysis 50K samples.
 
 #define minimum_battery_voltage 7
 
 #define delT 1e-3 
+
+
+//constants for encoder to turn right/left/180
+#define TURN_RIGHT_COUNT 1900      //1900 for fake maze
+#define TURN_LEFT_COUNT 1850      //1850 for fake maze +/- 50
+#define TURN_AROUND_COUNT 3000    //3000 for fake maze
+#define ONECELL 7100              //7200 for fake maze
+
+
+//constants for wall sensing left/right/front
+#define hasLeftWall 190 //190 for fake maze
+#define hasRightWall 220  //220 for fake maze; 120 for real maze
+#define hasFrontWall 300  //300 for fake maze; 
+
+#define PIDSTOP 600    //600 for fake maze;
+#define LEFTPID 200    //200 for fake maze
+#define RIGHTPID 350  //350 for fake maze
+//maybe define new ones for wall sensing for the floodfill
+
 
 //Change these values
 //PID GAINS 
@@ -102,6 +138,33 @@ extern double yawMag_rads;
 
 extern int IR_readings[3][2];
 extern int irArray[4][4];
+
+//FLOOD FILL / MAZE SOLVING
+
+
+//Define Driving Direction
+#define BACKWARD 0
+#define FORWARD 1
+
+
+// Directions
+#define NORTH 0
+#define EAST 1
+#define SOUTH 2
+#define WEST 3
+
+extern short frontwallflag; //global flag that is set when PID finds a front wall
+extern short noWall;  //global flag to detect scenario with no walls
+extern struct Maze * my_maze; //maze that keeps track of flood fill values and walls
+extern struct Stack * my_stack; //stack used for flood fill
+extern struct Node * temp; //node used for in-between start->goal, goal->start transition
+extern short found_dest; //flag if goal is reached
+extern short direction; //direction that the mouse is facing
+extern short x, y; //current coordinates of the mouse in the maze
+
+extern short goal_x, goal_y; //goal coordinates once found
+
+
 
 //*/
 #endif // !CONSTANTS_H

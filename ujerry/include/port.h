@@ -5,9 +5,9 @@
 #define AND &&
 #define builtin_led_Pin D13
 //Need analog pin
-#define battery_Pin 0
+#define battery_Pin PC_2
 //Left motor Pin_Nos 
-#define rme D3
+#define rme PC_8
 #define rmi1 D2
 #define rmi2 D4
 

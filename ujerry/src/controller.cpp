@@ -12,11 +12,11 @@ Motor leftMotor(lme,lmi1,lmi2);
 
 
 //Private variables
-double x = 0;
-double x_vel = 0 ;
-double x_acc = 0 ;
-double ang = 0 ;
-double ang_w = 0 ;
+static double x_pos = 0;
+static double x_vel = 0 ;
+static double x_acc = 0 ;
+static double ang = 0 ;
+static double ang_w = 0 ;
 
 
 double vel_pwm = 0;

@@ -29,6 +29,8 @@ unsigned long time_diff = 0;
     bool diag_r_rx_read_before ;
     bool diag_l_rx_read_before ;
 
+  //Private function prototype
+  
 
 //constructor
 //First front LTX diag LTX side 
@@ -108,6 +110,24 @@ void IR::powerDOWN_Tx(int ledPin){
 }
 float IR::get_Rx(int rx_Pin){
   return analogRead(rx_Pin);
+}
+
+
+
+int front_left_IR    = 0;
+int front_right_IR   = 0; 
+int diag_left_IR     = 0;
+int diag_right_IR    = 0;
+int side_left_IR     = 0;
+int side_right_IR    = 0;
+
+void IR::map_IR(void){
+  front_left_IR    = IR_readings[0][0];
+  front_right_IR   = IR_readings[0][1]; 
+  diag_left_IR     = IR_readings[1][0]; 
+  diag_right_IR    = IR_readings[1][1]; 
+  side_left_IR     = IR_readings[2][0]; 
+  side_right_IR    = IR_readings[2][1]; 
 }
 
 
@@ -222,7 +242,7 @@ void IR::fire_and_get(void){
       powerDOWN_Tx(side_r_tx);    
     reset_params();
   }
-
+  map_IR();
 }
 
 
