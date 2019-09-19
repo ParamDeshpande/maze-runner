@@ -5,6 +5,7 @@ class Motor{
   public:
     Motor(short int enable,short int input1,short int input2); //constructor
     void forward(unsigned int);
+    void backward(unsigned int);
 
 };
 

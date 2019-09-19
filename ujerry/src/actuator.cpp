@@ -1,6 +1,4 @@
-#include"../include/main.h"
-#include"../include/port.h"
-#include"../include/constants.h"
+#include"../include/commons.h"
 
 #include"../include/actuator.h"
 
@@ -27,6 +25,11 @@ Motor::Motor(short int enablePinNo,short int input1PinNo,short int input2PinNo){
   }
 
 
+  void Motor::backward(unsigned int PWM){  //*moves the bot in reverse useful for hardBrake*
+    analogWrite(enable, PWM);
+    digitalWrite(input1, LOW);
+    digitalWrite(input2, HIGH);
+  }
 
 /**************END_OF_FILE*****************/
 

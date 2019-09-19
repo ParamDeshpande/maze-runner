@@ -1,7 +1,5 @@
 
-#include"../include/main.h"
-#include"../include/port.h"
-#include"../include/constants.h"
+#include"../include/commons.h"
 
 #include "../include/speed_profiler.h"
 #include "../include/controller.h"
@@ -21,10 +19,13 @@ For curve turns need explicit parameters.
 //wSpeed (rads / sec) YEP
 //x_Speed (m/s)    YEP
 
+
+//Global
 double desired_vel = 0;
 double desired_w = 0 ;
 double desired_x_acc = 0 ;
 
+//Local
 static double x_Speed = 0 ;
 static double yaw_Speed = 0 ;
 
@@ -50,6 +51,7 @@ void pivot_left(void){
 
 }
 
+
 void pivot_right(void){
 
     x_Speed = 0;
@@ -67,8 +69,8 @@ void curved_turn_right(void){
 
 }
 
-void turn_around(void){
-    main_controller(0,DEG_2_RADS(-180));
+void motorbreak(void){
+    main_controller(0,0);
 }
 
 //*/

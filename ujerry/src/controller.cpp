@@ -1,6 +1,4 @@
-#include"../include/main.h"
-#include"../include/port.h"
-#include"../include/constants.h"
+#include"../include/commons.h"
 
 #include "../include/controller.h"
 #include "../include/actuator.h"
@@ -9,6 +7,13 @@
 Motor rightMotor(rme,rmi1,rmi2);
 Motor leftMotor(lme,lmi1,lmi2);
 
+
+//global variables
+double current_x = 0;
+double current_vel = 0;
+double current_x_acc = 0 ;
+double current_yaw = 0 ;
+double current_w = 0 ;
 
 
 //Private variables
@@ -19,22 +24,19 @@ static double ang = 0 ;
 static double ang_w = 0 ;
 
 
-double vel_pwm = 0;
-double w_pwm = 0;
+static double vel_pwm = 0;
+static double w_pwm = 0;
+ 
+static double vel_Error = 0;
+static double w_Error = 0; 
 
-double vel_Error = 0;
-double w_Error = 0; 
+static double x_Error = 0;
+static double ang_Error = 0;
 
-double x_Error = 0;
-double ang_Error = 0;
-
-
-//global variables
-double current_x = 0;
-double current_vel = 0;
-double current_x_acc = 0 ;
-double current_yaw = 0 ;
-double current_w = 0 ;
+#ifdef DEBUG_CONTROLLER
+static double leftMotorPWM = 0;
+static double rightMotorPWM = 0;
+#endif // DEBUG_CONTROLLER
 
 void main_controller(double desired_vel, double desired_w ){
 
@@ -51,9 +53,28 @@ void main_controller(double desired_vel, double desired_w ){
      //x_PD controller.
     vel_pwm = x_Kp*vel_Error +  x_Ki*x_Error +  x_Kd*vel_Error/delT  ;
     w_pwm = w_Kp*w_Error + w_Ki*ang_Error + w_Kd*ang_Error/delT ;
-    
+    //RUN NORMALLY
+    #ifndef DEBUG_CONTROLLER
     leftMotor.forward(vel_pwm - w_pwm);
     rightMotor.forward(vel_pwm + w_pwm);
+    #endif // DEBUG_CONTROLLER
+
+
+    #ifdef DEBUG_CONTROLLER
+    leftMotorPWM = vel_pwm - w_pwm;
+    rightMotorPWM = vel_pwm + w_pwm;
+    if(leftMotorPWM >0)
+      leftMotor.forward(leftMotorPWM);
+    else  //If negative
+      leftMotor.backward(-leftMotorPWM);
+    
+    if(rightMotorPWM >0)
+      rightMotor.forward(rightMotorPWM);
+    else  //If negative
+      rightMotor.backward(-rightMotorPWM);
+
+    #endif // DEBUG_CONTROLLER
+
 
 }
 

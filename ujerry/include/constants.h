@@ -13,6 +13,8 @@ extern int side_left_IR   ;
 extern int side_right_IR  ;  
 
 
+#define MAX_W_ACLKWISE -4*M_PI //rads per sec
+#define MAX_W_CLKWISE 4*M_PI //rads per sec
 
 
 //Super important dont change UL.
@@ -20,7 +22,8 @@ extern int side_right_IR  ;
 #define FILLARRAY(a,n) a[0]=n, memcpy( ((char*)a)+sizeof(a[0]), a, sizeof(a)-sizeof(a[0]) );
 
 
-#define DEG_2_RADS(degrees) degrees*M_PI/180.0f
+#define D_2_RAD(degrees) degrees*M_PI/180.0f
+
 
 #define angleSumFiftyK 12000UL //DO edit after analysis 50K samples.
 
@@ -33,14 +36,14 @@ extern int side_right_IR  ;
 #define TURN_RIGHT_COUNT 1900      //1900 for fake maze
 #define TURN_LEFT_COUNT 1850      //1850 for fake maze +/- 50
 #define TURN_AROUND_COUNT 3000    //3000 for fake maze
-#define ONECELL 7100              //7200 for fake maze
+#define ONECELL 0.25//  M          //7200 for fake maze
 
 
 //constants for wall sensing left/right/front
 #define hasLeftWall 190 //190 for fake maze
 #define hasRightWall 220  //220 for fake maze; 120 for real maze
 #define hasFrontWall 300  //300 for fake maze; 
-
+//IR THRESHOLD min dist before stopping
 #define PIDSTOP 600    //600 for fake maze;
 #define LEFTPID 200    //200 for fake maze
 #define RIGHTPID 350  //350 for fake maze
@@ -85,8 +88,6 @@ extern double current_x_acc ;
 extern double current_yaw ;
 extern double current_w;
 
-
-    
 extern double left_enc_dist ;
 extern double right_enc_dist;
 

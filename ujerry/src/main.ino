@@ -1,6 +1,4 @@
-#include "../include/main.h"
-#include "../include/port.h"
-#include "../include/constants.h"
+#include "../include/commons.h"
 
 #include "../include/battery_voltage.h"
 #include "../include/imu.h"
@@ -9,6 +7,8 @@
 #include "../include/IR.h"
 #include "../include/speed_profiler.h"
 #include "../include/encoder.h"
+//#include "../include/path_planner.h"
+//#include "../include/test_run.h"
 
 /*
 short frontwallflag; //global flag that is set when PID finds a front wall
@@ -44,8 +44,6 @@ short goal_x, goal_y; //goal coordinates once found
     display_encoder_distance();   
     kalman_Magic();
     
-    
-
     desired_vel = 10;
 
     const_Speed();
@@ -65,8 +63,11 @@ short goal_x, goal_y; //goal coordinates once found
   {
     Serial.begin(115200);
     while(!Serial) {}
+
     init_IMU();
     init_STATES();
+  //  init_MAZE();
+    
   }
 
   void loop()

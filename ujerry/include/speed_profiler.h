@@ -7,5 +7,6 @@ void pivot_left(void);
 void pivot_right(void);
 void curved_turn_left(void);
 void curved_turn_right(void);
+void motorbreak(void);
 
 #endif // !SPEED_PROFILES_H
