@@ -2,7 +2,7 @@
   Test Nucleo-F401RE with HC05 Bluetooth adapter
   
   Wanted to use it for upload of telemetry
-  type a command and hc053 port and it will be echoed back
+  type a command and bt port and it will be echoed back
   
   
   pin-HC05  Pin-MBed
@@ -31,7 +31,7 @@
   ***
   
 */
-#include "mbed.h"
+#include "commons.h"
 #include "multi-serial-command-listener.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
@@ -44,13 +44,41 @@ char myCommand[SCMD_MAX_CMD_LEN+1];
 
 //Serial hc05(D1, D0); // PA_2, PA_3 This one does not work because redirected to USBTX, USBRX
 //                     //  can be fixed by changing solder bridges                      
-Serial hc052(D10,D2); // PB_6, PA_10 This one works
-Serial hc053(PA_11, PA_12);  // This one works
+Serial bt(PA_11, PA_12);  // This one works
 Serial pc(USBTX, USBRX); 
  
 DigitalOut myled(LED1);
 
- 
+
+//FUNCTION PROTOTYPES
+void commandCallback(char *, void *); 
+
+
+int main() {
+  pc.baud(9600);
+  bt.baud(9600);
+  int i = 1;
+  struct SCMD *cmdProc = scMake(&bt, commandCallback, NULL)  ;
+
+  pc.printf("Test HC05 Bluetooth Connection !\r\n");
+  while(1) { 
+      wait(1);
+      bt.printf("PA_11/PA_12 %d seconds\r\n", i);
+      pc.printf("This program runs since %d seconds.\r\n", i++);
+      myled = !myled;
+      if (myCommand[0] != 0) {     
+          pc.printf("Command Recieved =%s\r\n", myCommand);
+          bt.printf("\r\nCommand Recieved =%s\r\n", myCommand);
+          if (strcmp(myCommand,"clear") == 0) {
+            i = 0;
+          }
+          myCommand[0] = 0; // clear until we recieve the next command
+      }        
+  }
+}
+
+
+//UTILITY FUNCTION
 void commandCallback(char *cmdIn, void *extraContext) {
   strcpy(myCommand, cmdIn);
   // all our commands will be recieved async in commandCallback
@@ -61,31 +89,3 @@ void commandCallback(char *cmdIn, void *extraContext) {
   // See data_log one of dependants of this library for example 
   // of using *extraContext
 }
- 
-int main() {
-  pc.baud(9600);
-  //hc05.baud(9600);
-  hc052.baud(9600);
-  hc053.baud(9600);
-  int i = 1;
-  struct SCMD *cmdProc = scMake(&hc053, commandCallback, NULL)  ;
-    
-  pc.printf("Test HC05 Bluetooth Connection !\r\n");
-  while(1) { 
-      wait(1);
-      //hc05.printf("d1/do this program runs since %d seconds.\r\n", i);
-      hc052.printf("d10/d2 %d seconds\r\n", i);
-      hc053.printf("PA_11/PA_12 %d seconds\r\n", i);
-      pc.printf("This program runs since %d seconds.\r\n", i++);
-      myled = !myled;
-      if (myCommand[0] != 0) {     
-          pc.printf("Command Recieved =%s\r\n", myCommand);
-          hc053.printf("\r\nCommand Recieved =%s\r\n", myCommand);
-          if (strcmp(myCommand,"clear") == 0) {
-            i = 0;
-          }
-          myCommand[0] = 0; // clear until we recieve the next command
-      }        
-  }
-}
- 

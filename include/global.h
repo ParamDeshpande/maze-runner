@@ -1,6 +1,13 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+//STARTING WITH UTILS AKA
+//BLUETOOTH
+
+// Serial bt(PA_11, PA_12);  // This one works
+// Serial pc(USBTX, USBRX); 
+ 
+
 
 //#define DEBUG
 

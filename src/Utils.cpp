@@ -4,7 +4,7 @@
 #include "../include/commons.h"
 //#include "../include/multi-serial-command-listener.h"
 
-
+/*
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
 //------------------------------------
