@@ -32,7 +32,7 @@
   
 */
 #include "mbed.h"
-#include "multi-serial-command-listener.h"
+#include "../include/multi-serial-command-listener.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
@@ -65,7 +65,7 @@ void commandCallback(char *cmdIn, void *extraContext) {
 int main() {
   pc.baud(9600);
   //hc05.baud(9600);
-  hc052.baud(9600);
+  //hc052.baud(9600);
   hc053.baud(9600);
   int i = 1;
   struct SCMD *cmdProc = scMake(&hc053, commandCallback, NULL)  ;
@@ -74,7 +74,7 @@ int main() {
   while(1) { 
       wait(1);
       //hc05.printf("d1/do this program runs since %d seconds.\r\n", i);
-      hc052.printf("d10/d2 %d seconds\r\n", i);
+    //  hc052.printf("d10/d2 %d seconds\r\n", i);
       hc053.printf("PA_11/PA_12 %d seconds\r\n", i);
       pc.printf("This program runs since %d seconds.\r\n", i++);
       myled = !myled;
