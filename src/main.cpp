@@ -33,6 +33,7 @@
 */
 #include "commons.h"
 #include "multi-serial-command-listener.h"
+#include "IR.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
@@ -63,8 +64,10 @@ int main() {
   pc.printf("Test HC05 Bluetooth Connection !\r\n");
   while(1) { 
       wait(1);
+      IR_module.fire_and_get();
+      
       bt.printf("PA_11/PA_12 %d seconds\r\n", i);
-      pc.printf("This program runs since %d seconds.\r\n", i++);
+      bt.printf("front_left_IR value %d \r\n", front_left_IR);
       myled = !myled;
       if (myCommand[0] != 0) {     
           pc.printf("Command Recieved =%s\r\n", myCommand);

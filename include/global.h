@@ -11,6 +11,9 @@
 
 //#define DEBUG
 
+#define HIGH 1
+#define LOW 0
+
 #define TRUE true
 #define FALSE false
 

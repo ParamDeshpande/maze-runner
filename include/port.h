@@ -9,7 +9,7 @@
 //Left motor Pin_Nos 
 #define rme PC_8
 #define rmi1 PC_9
-#define rmi2 PA_9
+#define rmi2 PB_8       
 
 //Right motor Pin_Nos
 #define lme PC_6
