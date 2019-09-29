@@ -33,7 +33,7 @@ static double w_Error = 0;
 static double x_Error = 0;
 static double ang_Error = 0;
 
-#ifdef DEBUG_CONTROLLER
+#ifndef DEBUG_CONTROLLER
 static double leftMotorPWM = 0;
 static double rightMotorPWM = 0;
 #endif // DEBUG_CONTROLLER
@@ -46,21 +46,27 @@ void main_controller(double desired_vel, double desired_w ){
     vel_Error = desired_vel - current_vel;
     w_Error = desired_w - current_w;
 
-    //needs to be clamped.
+    //now clamped. between -100 to 100 value
+    if(leftMotorPWM > 100 || leftMotorPWM<(-100) ||  rightMotorPWM > 100 || rightMotorPWM<(-100)){
+      //DO NOTHING aka dont integrate passed outer limits
+    }
+    else{
+    //PARAMS WITHIN LIMITS
     x_Error += vel_Error*delT;//Integrating position.
     ang_Error += w_Error*delT;//Integrating angle.
+    }
 
      //x_PD controller.
     vel_pwm = x_Kp*vel_Error +  x_Ki*x_Error +  x_Kd*vel_Error/delT  ;
     w_pwm = w_Kp*w_Error + w_Ki*ang_Error + w_Kd*ang_Error/delT ;
     //RUN NORMALLY
-    #ifndef DEBUG_CONTROLLER
+    #ifdef DEBUG_CONTROLLER
     leftMotor.forward(vel_pwm - w_pwm);
     rightMotor.forward(vel_pwm + w_pwm);
     #endif // DEBUG_CONTROLLER
 
 
-    #ifdef DEBUG_CONTROLLER
+    #ifndef DEBUG_CONTROLLER
     leftMotorPWM = vel_pwm - w_pwm;
     rightMotorPWM = vel_pwm + w_pwm;
     if(leftMotorPWM >0)
