@@ -76,7 +76,7 @@ int main() {
     /*LOOP CODE BEGINS HERE*/
       wait(1);
       //IR_module.fire_and_get();
-      refresh_imu();  
+      //refresh_imu();  
       
       bt.printf("PA_11/PA_12 %d seconds\r\n", i);
       /*bt.printf("front_left_IR value %d \r\n", front_left_IR);
