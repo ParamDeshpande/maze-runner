@@ -34,6 +34,7 @@
 #include "commons.h"
 #include "multi-serial-command-listener.h"
 #include "IR.h"
+#include "imu.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
@@ -48,7 +49,7 @@ char myCommand[SCMD_MAX_CMD_LEN+1];
 Serial bt(PA_11, PA_12);  // This one works
 Serial pc(USBTX, USBRX); 
  
-DigitalOut myled(LED1);
+//DigitalOut myled(LED1); DEFINED ELSEWHERE
 
 
 //FUNCTION PROTOTYPES
@@ -56,18 +57,29 @@ void commandCallback(char *, void *);
 
 
 int main() {
+  /*MAIN SETUP BEGINS HERE*/
   pc.baud(9600);
   bt.baud(9600);
+
   int i = 1;
   struct SCMD *cmdProc = scMake(&bt, commandCallback, NULL)  ;
 
   pc.printf("Test HC05 Bluetooth Connection !\r\n");
+  
+
+
+  imu_setup();
+  
+  /*MAIN SETUP ENDS HERE*/
+  
   while(1) { 
+    /*LOOP CODE BEGINS HERE*/
       wait(1);
-      IR_module.fire_and_get();
+      //IR_module.fire_and_get();
+      refresh_imu();  
       
       bt.printf("PA_11/PA_12 %d seconds\r\n", i);
-      bt.printf("front_left_IR value %d \r\n", front_left_IR);
+      /*bt.printf("front_left_IR value %d \r\n", front_left_IR);
       myled = !myled;
       if (myCommand[0] != 0) {     
           pc.printf("Command Recieved =%s\r\n", myCommand);
@@ -77,8 +89,12 @@ int main() {
           }
           myCommand[0] = 0; // clear until we recieve the next command
       }        
+    /*LOOP CODE ENDS HERE*/
   }
+
 }
+
+
 
 
 //UTILITY FUNCTION

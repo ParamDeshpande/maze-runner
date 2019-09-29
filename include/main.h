@@ -5,5 +5,8 @@
 
 /*Reg maps */
 #include "mbed.h"
-    
+
+extern Serial bt;
+extern Serial pc;
+
 #endif // !MAIN_H
