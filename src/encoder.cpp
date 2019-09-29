@@ -1,5 +1,6 @@
 //#include "Arduino.h"
-#include "commons.h"
+#include "../include/commons.h"
+
 #include "../include/encoder.h"
 
 // Hardware Quadrature Encoder ABZ for Nucleo F401RE
