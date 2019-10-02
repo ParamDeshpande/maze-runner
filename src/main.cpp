@@ -35,6 +35,7 @@
 #include "multi-serial-command-listener.h"
 #include "IR.h"
 #include "imu.h"
+#include "motor_commons.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
@@ -65,9 +66,6 @@ int main() {
   struct SCMD *cmdProc = scMake(&bt, commandCallback, NULL)  ;
 
   pc.printf("Test HC05 Bluetooth Connection !\r\n");
-  
-
-
   imu_setup();
   
   /*MAIN SETUP ENDS HERE*/
@@ -76,7 +74,7 @@ int main() {
     /*LOOP CODE BEGINS HERE*/
       wait(1);
       //IR_module.fire_and_get();
-      //refresh_imu();  
+      refresh_imu();  
       
       bt.printf("PA_11/PA_12 %d seconds\r\n", i);
       /*bt.printf("front_left_IR value %d \r\n", front_left_IR);

@@ -123,9 +123,9 @@ void refresh_imu(void)
     mpu9250.getAres(); // Get accelerometer sensitivity
     mpu9250.getGres(); // Get gyro sensitivity
     mpu9250.getMres(); // Get magnetometer sensitivity
-    bt.printf("Accelerometer sensitivity is %f LSB/g \n\r", 1.0f/aRes);
-    bt.printf("Gyroscope sensitivity is %f LSB/deg/s \n\r", 1.0f/gRes);
-    bt.printf("Magnetometer sensitivity is %f LSB/G \n\r", 1.0f/mRes);
+    //bt.printf("Accelerometer sensitivity is %f LSB/g \n\r", 1.0f/aRes);
+    //bt.printf("Gyroscope sensitivity is %f LSB/deg/s \n\r", 1.0f/gRes);
+    //bt.printf("Magnetometer sensitivity is %f LSB/G \n\r", 1.0f/mRes);
     magbias[0] = +470.;  // User environmental x-axis correction in milliGauss, should be automatically calculated
     magbias[1] = +120.;  // User environmental x-axis correction in milliGauss
     magbias[2] = +125.;  // User environmental x-axis correction in milliGauss
@@ -176,26 +176,26 @@ void refresh_imu(void)
     delt_t = t.read_ms() - imu_count;
     if (delt_t > 500) { // update LCD once per half-second independent of read rate
 
-    bt.printf("ax = %f", 1000*ax); 
-    bt.printf(" ay = %f", 1000*ay); 
-    bt.printf(" az = %f  mg\n\r", 1000*az); 
+    //bt.printf("ax = %f", 1000*ax); 
+    //bt.printf(" ay = %f", 1000*ay); 
+    //bt.printf(" az = %f  mg\n\r", 1000*az); 
 
-    bt.printf("gx = %f", gx); 
-    bt.printf(" gy = %f", gy); 
-    bt.printf(" gz = %f  deg/s\n\r", gz); 
+    //bt.printf("gx = %f", gx); 
+    //bt.printf(" gy = %f", gy); 
+    //bt.printf(" gz = %f  deg/s\n\r", gz); 
     
-    bt.printf("gx = %f", mx); 
-    bt.printf(" gy = %f", my); 
-    bt.printf(" gz = %f  mG\n\r", mz); 
+    //bt.printf("gx = %f", mx); 
+    //bt.printf(" gy = %f", my); 
+    //bt.printf(" gz = %f  mG\n\r", mz); 
     
     tempCount = mpu9250.readTempData();  // Read the adc values
     temperature = ((float) tempCount) / 333.87f + 21.0f; // Temperature in degrees Centigrade
     bt.printf(" temperature = %f  C\n\r", temperature); 
     
-    bt.printf("q0 = %f\n\r", q[0]);
-    bt.printf("q1 = %f\n\r", q[1]);
-    bt.printf("q2 = %f\n\r", q[2]);
-    bt.printf("q3 = %f\n\r", q[3]);      
+    //bt.printf("q0 = %f\n\r", q[0]);
+    //bt.printf("q1 = %f\n\r", q[1]);
+    //bt.printf("q2 = %f\n\r", q[2]);
+    //bt.printf("q3 = %f\n\r", q[3]);      
     
 /*    lcd.clear();
     lcd.printString("MPU9250", 0, 0);
@@ -225,7 +225,7 @@ void refresh_imu(void)
     roll  *= 180.0f / PI;
 
     bt.printf("Yaw, Pitch, Roll: %f %f %f\n\r", yaw, pitch, roll);
-    bt.printf("average rate = %f\n\r", (float) sumCount/sum);
+    //bt.printf("average rate = %f\n\r", (float) sumCount/sum);
 //    sprintf(buffer, "YPR: %f %f %f", yaw, pitch, roll);
 //    lcd.printString(buffer, 0, 4);
 //    sprintf(buffer, "rate = %f", (float) sumCount/sum);
