@@ -116,7 +116,8 @@ void imu_setup(void){
     }
 
 }   
-
+int Countt = 0;
+double yawGyro_rads =0;
 
 void refresh_imu(void)
 {
@@ -190,7 +191,7 @@ void refresh_imu(void)
     
     tempCount = mpu9250.readTempData();  // Read the adc values
     temperature = ((float) tempCount) / 333.87f + 21.0f; // Temperature in degrees Centigrade
-    bt.printf(" temperature = %f  C\n\r", temperature); 
+    //bt.printf(" temperature = %f  C\n\r", temperature); 
     
     //bt.printf("q0 = %f\n\r", q[0]);
     //bt.printf("q1 = %f\n\r", q[1]);
@@ -217,14 +218,18 @@ void refresh_imu(void)
   // applied in the correct order which for this configuration is yaw, pitch, and then roll.
   // For more see http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles which has additional links.
     yaw   = atan2(2.0f * (q[1] * q[2] + q[0] * q[3]), q[0] * q[0] + q[1] * q[1] - q[2] * q[2] - q[3] * q[3]);   
+
+    yawGyro_rads +=  (gz*(50000) - angleSumFiftyK)/50000;
     pitch = -asin(2.0f * (q[1] * q[3] - q[0] * q[2]));
     roll  = atan2(2.0f * (q[0] * q[1] + q[2] * q[3]), q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]);
     pitch *= 180.0f / PI;
     yaw   *= 180.0f / PI; 
-    yaw   -= 13.8f; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04
+    //yaw   -= 13.8f; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04 (magnetic degs)
+    // MUMBAI IT IS 0deg 3mins    
     roll  *= 180.0f / PI;
 
-    bt.printf("Yaw, Pitch, Roll: %f %f %f\n\r", yaw, pitch, roll);
+    //countt
+    bt.printf(" i = %d , Yaw: %f , yaw GYRO:%f  \n\r",Countt, yaw, yawGyro_rads);
     //bt.printf("average rate = %f\n\r", (float) sumCount/sum);
 //    sprintf(buffer, "YPR: %f %f %f", yaw, pitch, roll);
 //    lcd.printString(buffer, 0, 4);

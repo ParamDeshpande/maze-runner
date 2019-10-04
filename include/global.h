@@ -37,7 +37,7 @@ extern float side_right_IR  ;
 #define D_2_RAD(degrees) degrees*M_PI/180.0f
 #define RADS_2_D(rads) rads*180.0f/M_PI
 
-#define angleSumFiftyK 14.671313 //DO edit after analysis 50K samples.
+#define angleSumFiftyK 0   //14.671313 //DO edit after analysis 50K samples.
 
 #define minimum_battery_voltage 7
 
