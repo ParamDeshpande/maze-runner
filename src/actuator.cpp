@@ -6,6 +6,54 @@ short int enable;
 short int input1;
 short int input2;
 
+#include "mbed.h"
+#include "mbed.h"
+ 
+
+    PwmOut r_enable(rme);
+    //DigitalOut r_enable(rme);
+    DigitalOut r_input1(rmi2);
+    DigitalOut r_input2(rmi1);
+
+    PwmOut l_enable(lme);
+    DigitalOut l_input1(lmi2);
+    DigitalOut l_input2(lmi1);
+
+
+    void r_forward(float percent_PWM){
+    r_enable.period_ms(40.0f);     
+    r_enable = percent_PWM/100.0f;
+    r_input1 = HIGH;
+    r_input2 = LOW;
+    }
+
+    void r_backward(float percent_PWM){
+
+    r_enable.period_ms(40.0f);     
+    r_enable = percent_PWM/100.0f;
+    r_input1 = LOW;
+    r_input2 = HIGH;
+    }
+
+
+    void l_forward(float percent_PWM){
+    
+    l_enable.period_ms(40.0f);  
+    l_enable = percent_PWM/100.0f;
+    l_input1 = HIGH;
+    l_input2 = LOW;
+    }
+
+
+    void l_backward(float percent_PWM){
+    
+    l_enable.period_ms(40.0f);
+    l_enable = percent_PWM/100.0f;
+    l_input1 = LOW;
+    l_input2 = HIGH;
+    }
+
+
 //Simple actuator file to move motor ahead.
 Motor::Motor(PinName enablePinNo,PinName input1PinNo,PinName input2PinNo){ //constructor
     
@@ -16,22 +64,27 @@ Motor::Motor(PinName enablePinNo,PinName input1PinNo,PinName input2PinNo){ //con
 
 }
  
-  void Motor::forward(float PWM){   //moves the bot forward
+  void Motor::forward(float percent_PWM){   //moves the bot forward
 
-    enable = PWM;
+    enable = percent_PWM;
     input1 = HIGH;
     input2 = LOW;
   
   }
 
 
-  void Motor::backward(float PWM){  //*moves the bot in reverse useful for hardBrake*
+  void Motor::backward(float percent_PWM){  //*moves the bot in reverse useful for hardBrake*
     
-    enable = PWM;
+    enable = percent_PWM;
     input1 = LOW;
     input2 = HIGH;
 
   }
+
+
+//Motor rightMotor(rme,rmi1,rmi2);
+//Motor leftMotor(lme,lmi1,lmi2);
+
 
 /**************END_OF_FILE*****************/
 

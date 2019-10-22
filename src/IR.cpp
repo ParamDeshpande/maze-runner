@@ -28,29 +28,47 @@ unsigned long time_diff = 0;
     bool diag_l_rx_read_before ;
 
   //Private function prototype
-  
+  DigitalOut front_l_tx(front_l_tx_Pin_No );  
+  DigitalOut front_r_tx(front_r_tx_Pin_No) ;  
+  DigitalOut diag_l_tx(diag_l_tx_Pin_No )  ;
+  DigitalOut diag_r_tx(diag_r_tx_Pin_No )  ;
+  DigitalOut side_l_tx(side_l_tx_Pin_No )  ;
+  DigitalOut side_r_tx(side_r_tx_Pin_No )  ;
+    
+  AnalogIn front_l_rx(front_l_rx_Pin_No) ;  
+  AnalogIn front_r_rx(front_r_rx_Pin_No) ;  
+  AnalogIn  side_l_rx( side_l_rx_Pin_No) ;
+  AnalogIn  side_r_rx( side_r_rx_Pin_No) ;
+  AnalogIn  diag_l_rx( diag_l_rx_Pin_No) ;
+  AnalogIn  diag_r_rx( diag_r_rx_Pin_No) ;
+
 
 //constructor
 //First front LTX diag LTX side 
-IR::IR(int front_l_tx_Pin, int front_r_tx_Pin, int diag_l_tx_Pin, int diag_r_tx_Pin, int side_l_tx_Pin,int side_r_tx_Pin ,int front_l_rx_Pin, int front_r_rx_Pin, int side_l_rx_Pin, int side_r_rx_Pin, int diag_l_rx_Pin, int diag_r_rx_Pin)
+IR::IR(PinName front_l_tx_Pin, PinName front_r_tx_Pin, PinName diag_l_tx_Pin, PinName diag_r_tx_Pin, PinName side_l_tx_Pin,PinName side_r_tx_Pin ,PinName front_l_rx_Pin, PinName front_r_rx_Pin, PinName side_l_rx_Pin, PinName side_r_rx_Pin, PinName diag_l_rx_Pin, PinName diag_r_rx_Pin)
 {
   
-    front_l_tx =front_l_tx_Pin ;  
-    front_r_tx =front_r_tx_Pin ;  
-     diag_l_tx = diag_l_tx_Pin ;  
-     diag_r_tx = diag_r_tx_Pin ; 
-     side_l_tx = side_l_tx_Pin ; 
-     side_r_tx = side_r_tx_Pin ;   
-    front_l_rx =front_l_rx_Pin ;  
-    front_r_rx =front_r_rx_Pin ;  
-     side_l_rx = side_l_rx_Pin ; 
-     side_r_rx = side_r_rx_Pin ; 
-     diag_l_rx = diag_l_rx_Pin ; 
-     diag_r_rx = diag_r_rx_Pin ; 
+   // front_l_tx =front_l_tx_Pin ;  
+   // front_r_tx =front_r_tx_Pin ;  
+   //  diag_l_tx = diag_l_tx_Pin ;  
+   //  diag_r_tx = diag_r_tx_Pin ; 
+   //  side_l_tx = side_l_tx_Pin ; 
+   //  side_r_tx = side_r_tx_Pin ;   
+   
+   // front_l_rx =front_l_rx_Pin ;  
+   // front_r_rx =front_r_rx_Pin ;  
+   //  side_l_rx = side_l_rx_Pin ; 
+   //  side_r_rx = side_r_rx_Pin ; 
+   //  diag_l_rx = diag_l_rx_Pin ; 
+   //  diag_r_rx = diag_r_rx_Pin ; 
+//
+  
 
-    DigitalOut front_l_tx(PC_15);
-    AnalogIn front_l_rx(PC_2);
-    
+
+
+
+
+
     /*
     pinMode(front_l_tx, OUTPUT);
     pinMode(front_r_tx, OUTPUT);
@@ -103,16 +121,16 @@ void IR::reset_params(void){
 //ARRAY TO STORE LEFT SENSOR values
 //int IR_readings[3][2];
 
-void IR::powerUP_Tx(int ledPin){
-    ledPin = 1;
+void IR::powerUP_Tx(DigitalOut ledPin){
+    ledPin = HIGH;
     //digitalWrite(ledPin, HIGH);
 }
 
-void IR::powerDOWN_Tx(int ledPin){
+void IR::powerDOWN_Tx(DigitalOut ledPin){
     ledPin = 0;
 }
-float IR::get_Rx(int rx_pin_value){
-  return rx_pin_value;
+float IR::get_Rx(AnalogIn rx_pin_value){
+  return rx_pin_value.read()*100.0f;
 }
 
 
@@ -175,37 +193,45 @@ void IR::fire_and_get(void){
   map_IR();
 }
 
-/*
+
 
   void IR::display_IR(void){
-
-  Serial.print("  front left  ");
-  Serial.print(analogRead(A0));
-
-
-  Serial.print("  front right  ");
-  Serial.print(IR_readings[0][1]);
   
-
-  Serial.print("  diag left ");
-  Serial.print(IR_readings[1][0]);
-
-
-  Serial.print("  diag right  ");
-  Serial.print(IR_readings[1][1]);
+  bt.printf(" | f_l %3.3f%% | ",IR_readings[0][0] );
+  bt.printf(" | f_r %3.3f%% | ",IR_readings[0][1] );
+  bt.printf(" | d_l %3.3f%% | ",IR_readings[1][0] );
+  bt.printf(" | d_r %3.3f%% | ",IR_readings[1][1] );
+  bt.printf(" | s_l %3.3f%% | ",IR_readings[2][0] );
+  bt.printf(" | s_r %3.3f%% | \r\n",IR_readings[2][1] );
   
-
-  Serial.print("  side left ");
-  Serial.print(IR_readings[2][0]);
-
-
-  Serial.print("  side right  ");
-  Serial.print(IR_readings[2][1]);
-  
-  Serial.println("");
-//*
+  //  
+  //Serial.print("  front left  ");
+  //Serial.print(analogRead(A0));
+//
+//
+  //Serial.print("  front right  ");
+  //Serial.print(IR_readings[0][1]);
+  //
+//
+  //Serial.print("  diag left ");
+  //Serial.print(IR_readings[1][0]);
+//
+//
+  //Serial.print("  diag right  ");
+  //Serial.print(IR_readings[1][1]);
+  //
+//
+  //Serial.print("  side left ");
+  //Serial.print(IR_readings[2][0]);
+//
+//
+  //Serial.print("  side right  ");
+  //Serial.print(IR_readings[2][1]);
+  //
+  //Serial.println("");
+////*
   }
-*/
+//*/
 IR IR_module( front_l_tx_Pin_No,  front_r_tx_Pin_No,  diag_l_tx_Pin_No,  diag_r_tx_Pin_No,  side_l_tx_Pin_No, side_r_tx_Pin_No , front_l_rx_Pin_No,  front_r_rx_Pin_No,  side_l_rx_Pin_No, side_r_rx_Pin_No,  diag_l_rx_Pin_No,  diag_r_rx_Pin_No);
 
 

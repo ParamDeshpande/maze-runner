@@ -2,10 +2,10 @@
 #define ENCODER_H
 
 
-void EncoderInitialise_TIM2(void) ;
-void ZeroEncoderCount_TIM2() ;
-void ZeroEncoderCount_TIM1() ;
-void EncoderInitialise_TIM1(void) ;
+//void EncoderInitialise_TIM2(void) ;
+//void ZeroEncoderCount_TIM2() ;
+//void ZeroEncoderCount_TIM1() ;
+//void EncoderInitialise_TIM1(void) ;
 void read_encoder() ;
 
 #ifdef DEBUG

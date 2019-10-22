@@ -1,10 +1,21 @@
+/*#include "mbed.h"
+ 
+DigitalOut myled10(PB_12);
+ 
+int main() {
+    while(1) {
+        myled10 = 1;
+    }
+}
+//*/
+
 /* xej-Nucleo-F401RE-and-HC05-Bluetooth.cpp
   Test Nucleo-F401RE with HC05 Bluetooth adapter
   
   Wanted to use it for upload of telemetry
   type a command and bt port and it will be echoed back
   
-  
+
   pin-HC05  Pin-MBed
    TX   --- PA_12
    RX   --- PA_11
@@ -31,14 +42,23 @@
   ***
   
 */
+
 #include "commons.h"
 #include "multi-serial-command-listener.h"
 #include "IR.h"
 #include "imu.h"
+#include "encoder.h"
 #include "motor_commons.h"
+#include "actuator.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
+int char_int =0;
+void char_to_int(void){
+  char_int = myCommand[0] - '0';
+}
+//extern Motor rightMotor;
+//extern Motor leftMotor;
 
 //------------------------------------
 // RealTerm or Teraterm config
@@ -49,16 +69,19 @@ char myCommand[SCMD_MAX_CMD_LEN+1];
 //                     //  can be fixed by changing solder bridges                      
 Serial bt(PA_11, PA_12);  // This one works
 Serial pc(USBTX, USBRX); 
- 
+ #include "mbed.h"
 //DigitalOut myled(LED1); DEFINED ELSEWHERE
-
-
+    
 //FUNCTION PROTOTYPES
 void commandCallback(char *, void *); 
 
 
+  DigitalOut ledtest(front_r_tx_Pin_No);
+
+  AnalogIn rxtest(front_l_rx_Pin_No) ;  
+
 int main() {
-  /*MAIN SETUP BEGINS HERE*/
+  ///*MAIN SETUP BEGINS HERE*
   pc.baud(9600);
   bt.baud(9600);
 
@@ -68,17 +91,35 @@ int main() {
   pc.printf("Test HC05 Bluetooth Connection !\r\n");
   imu_setup();
   
-  /*MAIN SETUP ENDS HERE*/
+  ///*MAIN SETUP ENDS HERE*
   
   while(1) { 
-    /*LOOP CODE BEGINS HERE*/
-      wait(1);
-      //IR_module.fire_and_get();
-      refresh_imu();  
-      
+    ///*LOOP CODE BEGINS HERE*
+    //IR_module.fire_and_get();
+    //ledtest = 1;
+    //read_encoder();
+    refresh_imu();  
+    //  desired_vel = 5; // 5 m per sec
+    //  const_Speed();
+    //bt.printf("percentage: %3.3f%% ", rxtest.read()*100.0f);
+    //bt.printf("normalized: 0x%04X \r\n", rxtest.read_u16());
+    //bt.printf("analog val =  \r \n");
+    //IR_module.display_IR();
+    //rightMotor.backward(100);
+    //leftMotor.backward(100);
+
+    //Lenable = 1;
+    //Linput1 = 1;
+    //Linput2 = 0;
+
+    //r_forward(20);
+    //l_backward(20);
+ 
+
+    //main_controller(10,0);
       //bt.printf("PA_11/PA_12 %d seconds\r\n", i);
-      /*bt.printf("front_left_IR value %d \r\n", front_left_IR);
-      myled = !myled;
+      //*bt.printf("front_left_IR value %d \r\n", front_left_IR);
+     // myled = !myled;
       if (myCommand[0] != 0) {     
           pc.printf("Command Recieved =%s\r\n", myCommand);
           bt.printf("\r\nCommand Recieved =%s\r\n", myCommand);
@@ -87,7 +128,7 @@ int main() {
           }
           myCommand[0] = 0; // clear until we recieve the next command
       }        
-    /*LOOP CODE ENDS HERE*/
+    ///*LOOP CODE ENDS HERE*
   }
 
 }
@@ -106,3 +147,4 @@ void commandCallback(char *cmdIn, void *extraContext) {
   // See data_log one of dependants of this library for example 
   // of using *extraContext
 }
+//*/

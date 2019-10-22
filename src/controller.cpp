@@ -4,10 +4,6 @@
 #include "../include/actuator.h"
 
 
-Motor rightMotor(rme,rmi1,rmi2);
-Motor leftMotor(lme,lmi1,lmi2);
-
-
 //global variables
 double current_x = 0;
 double current_vel = 0;

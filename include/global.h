@@ -6,7 +6,7 @@
 
 // Serial bt(PA_11, PA_12);  // This one works
 // Serial pc(USBTX, USBRX); 
- 
+
 
 
 //#define DEBUG
@@ -51,15 +51,29 @@ extern float side_right_IR  ;
 #define ONECELL 0.25//  M          //7200 for fake maze
 
 
+// infinity values
+
+//
+//
+//
+//
+//
+//
+//
+//
+
 //constants for wall sensing left/right/front
-#define hasLeftWall 190 //190 for fake maze
-#define hasRightWall 220  //220 for fake maze; 120 for real maze
-#define hasFrontWall 300  //300 for fake maze; 
+#define hasLeftWall 0.7//% //190 for fake maze
+#define hasRightWall 10.0 //  //220 for fake maze; 120 for real maze
+#define hasFrontWall 7  //300 for fake maze; 
 //IR THRESHOLD min dist before stopping
 #define PIDSTOP 600    //600 for fake maze;
 #define LEFTPID 200    //200 for fake maze
 #define RIGHTPID 350  //350 for fake maze
 //maybe define new ones for wall sensing for the floodfill
+
+
+//MOTOR
 
 
 //Change these values

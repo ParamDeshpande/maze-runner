@@ -2,30 +2,33 @@
 #ifndef IR_h
 #define IR_h
 
+
+#include "mbed.h"
 //*
 class IR{
 
-	int front_l_tx;
-	int front_r_tx;
-    int diag_l_tx;
-	int diag_r_tx;
-	int side_l_tx;
-	int side_r_tx ;
-	int front_l_rx;
-	int front_r_rx;
-	int side_l_rx;
-	int side_r_rx;
-	int diag_l_rx;
-	int diag_r_rx;
-
-	//DEfined for the class STATIC OR PRIVATE ?
+//	DigitalOut front_l_tx	;
+//	DigitalOut front_r_tx	;
+//	DigitalOut diag_l_tx	;
+//	DigitalOut diag_r_tx	;
+//	DigitalOut side_l_tx	;
+//	DigitalOut side_r_tx	;
+//		
+//	AnalogIn front_l_rx		;
+//	AnalogIn front_r_rx		;
+//	AnalogIn  side_l_rx		;
+//	AnalogIn  side_r_rx		;
+//	AnalogIn  diag_l_rx		;
+//	AnalogIn  diag_r_rx		;
+//
+//	//DEfined for the class STATIC OR PRIVATE ?
 	public:
-		IR(int front_l_tx_Pin, int front_r_tx_Pin, int diag_l_tx_Pin, int diag_r_tx_Pin, int side_l_tx_Pin,int side_r_tx_Pin ,int front_l_rx_Pin, int front_r_rx_Pin, int side_l_rx_Pin, int side_r_rx_Pin, int diag_l_rx_Pin, int diag_r_rx_Pin);
+		IR(PinName front_l_tx_Pin, PinName front_r_tx_Pin, PinName diag_l_tx_Pin, PinName diag_r_tx_Pin, PinName side_l_tx_Pin,PinName side_r_tx_Pin ,PinName front_l_rx_Pin, PinName front_r_rx_Pin, PinName side_l_rx_Pin, PinName side_r_rx_Pin, PinName diag_l_rx_Pin, PinName diag_r_rx_Pin);
 		int irArray[3][4];
-		int IR_readings[3][2];
-		void powerUP_Tx(int ledPin);
-		void powerDOWN_Tx(int ledPin);		
-		float get_Rx(int rx_Pin);
+		float IR_readings[3][2];
+		void powerUP_Tx(DigitalOut ledPin);
+		void powerDOWN_Tx(DigitalOut ledPin);		
+		float get_Rx(AnalogIn rx_Pin);
 		void reset_params(void);
 		void map_IR(void) ;
 		void fire_and_get(void);

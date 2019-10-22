@@ -229,7 +229,7 @@ void refresh_imu(void)
     roll  *= 180.0f / PI;
 
     //countt
-    bt.printf(" i = %d , Yaw: %f , yaw GYRO:%f  \n\r",Countt, yaw, yawGyro_rads);
+    bt.printf("Yaw: %f , yaw GYRO: %f  \n\r",yaw, yawGyro_rads);
     //bt.printf("average rate = %f\n\r", (float) sumCount/sum);
 //    sprintf(buffer, "YPR: %f %f %f", yaw, pitch, roll);
 //    lcd.printString(buffer, 0, 4);
