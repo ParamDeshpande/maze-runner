@@ -11,7 +11,6 @@ For [technoxian](https://www.technoxian.com/) competetion 2019
 ## Authors
 
 State_Estimation and localization - [Param Deshpande](https://github.com/ParamDeshpande)  
-Algorithms - [Omkar Deshmukh](durbinURL)
 
 ## Acknowledgements
 
