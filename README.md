@@ -11,7 +11,9 @@ For [technoxian](https://www.technoxian.com/) competetion 2019
 ## Authors
 
 State_Estimation and localization - [Param Deshpande](https://github.com/ParamDeshpande)  
-Algorithms - [Omkar Deshmukh](durbinURL)
+
+## Issues 
+SEE CLOSED ISSUES REGARDING UART AND LIBUSB OPENOCD AND STUFF 
 
 ## Acknowledgements
 
