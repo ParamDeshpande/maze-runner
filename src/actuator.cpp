@@ -20,19 +20,19 @@ short int input2;
     DigitalOut l_input2(lmi1);
 
 
-    void r_forward(float percent_PWM){
+    void r_backward(float percent_PWM){
     r_enable.period_ms(40.0f);     
     r_enable = percent_PWM/100.0f;
     r_input1 = HIGH;
     r_input2 = LOW;
     }
 
-    void r_backward(float percent_PWM){
+    void r_forward(float percent_PWM){
 
     r_enable.period_ms(40.0f);     
     r_enable = percent_PWM/100.0f;
-    r_input1 = LOW;
-    r_input2 = HIGH;
+    r_input2 = LOW;
+    r_input1 = HIGH;
     }
 
 
@@ -40,8 +40,10 @@ short int input2;
     
     l_enable.period_ms(40.0f);  
     l_enable = percent_PWM/100.0f;
-    l_input1 = HIGH;
-    l_input2 = LOW;
+    l_input1 = LOW;
+    l_input2 = HIGH;
+    
+    
     }
 
 
@@ -49,8 +51,8 @@ short int input2;
     
     l_enable.period_ms(40.0f);
     l_enable = percent_PWM/100.0f;
-    l_input1 = LOW;
-    l_input2 = HIGH;
+    l_input1 = HIGH;
+    l_input2 = LOW;
     }
 
 

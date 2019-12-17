@@ -1,3 +1,18 @@
+/**
+ *   FOR STLINK CONNECTIONS(CN4) to NuCLEO BOARD (left side CN7) 
+ *      PIN1 - 3.3 V
+ *      PIN2 - PIN15
+ *      PIN3 - PIN19
+ *      PIN4 - PIN13
+ *      PIN5 - PIN14 
+ *      PIN6 - PIN31(CN10) (OPTIONAL) 
+ *      RX(CN3) - PIN35(CN10)
+ *      TX(CN3) - PIN37(CN10)
+ * 
+ */
+
+
+
 #ifndef PORT_H
 #define PORT_H
 
@@ -6,6 +21,8 @@
 #define builtin_led_Pin D13
 //Need analog pin
 #define battery_Pin PC_4
+#define buzzer_Pin PB_13
+ 
 //Left motor Pin_Nos 
 #define rme PC_8
 #define rmi1 PB_6

@@ -1,14 +1,3 @@
-/*#include "mbed.h"
- 
-DigitalOut myled10(PB_12);
- 
-int main() {
-    while(1) {
-        myled10 = 1;
-    }
-}
-//*/
-
 /* xej-Nucleo-F401RE-and-HC05-Bluetooth.cpp
   Test Nucleo-F401RE with HC05 Bluetooth adapter
   
@@ -42,7 +31,7 @@ int main() {
   ***
   
 */
-
+#include "mbed.h"
 #include "commons.h"
 #include "multi-serial-command-listener.h"
 #include "IR.h"
@@ -50,6 +39,7 @@ int main() {
 #include "encoder.h"
 #include "motor_commons.h"
 #include "actuator.h"
+#include "buzzer.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
@@ -57,54 +47,71 @@ int char_int =0;
 void char_to_int(void){
   char_int = myCommand[0] - '0';
 }
-//extern Motor rightMotor;
-//extern Motor leftMotor;
-
-//------------------------------------
-// RealTerm or Teraterm config
-// 9600 bauds, 8-bit data, no parity
-//------------------------------------
-
-//Serial hc05(D1, D0); // PA_2, PA_3 This one does not work because redirected to USBTX, USBRX
-//                     //  can be fixed by changing solder bridges                      
 Serial bt(PA_11, PA_12);  // This one works
-Serial pc(USBTX, USBRX); 
- #include "mbed.h"
-//DigitalOut myled(LED1); DEFINED ELSEWHERE
+Serial pc(PA_2, PA_3);    // WORKS AFTER CHANGING SOLDER BRIDGES
     
 //FUNCTION PROTOTYPES
 void commandCallback(char *, void *); 
 
+int main(void) {
+  ///*MAIN SETUP BEGINS HERE***********
 
-  DigitalOut ledtest(front_r_tx_Pin_No);
-
-  AnalogIn rxtest(front_l_rx_Pin_No) ;  
-
-int main() {
-  ///*MAIN SETUP BEGINS HERE*
   pc.baud(9600);
   bt.baud(9600);
-
+  int count_time = 0;
+  encoder_init();
   int i = 1;
   struct SCMD *cmdProc = scMake(&bt, commandCallback, NULL)  ;
-
   pc.printf("Test HC05 Bluetooth Connection !\r\n");
   imu_setup();
-  
-  ///*MAIN SETUP ENDS HERE*
+  ///*MAIN SETUP ENDS HERE*     
   
   while(1) { 
     ///*LOOP CODE BEGINS HERE*
     //IR_module.fire_and_get();
-    //ledtest = 1;
+    //IR_module.display_IR();
+    
+   // bt.printf(" | f_l %3.3f%% | ",front_left_IR );
+     if(count_time < 100){
+      r_backward(count_time);
+      l_forward(count_time);
+      buzzer_off();   
+     }
+     /*
+    else if((count_time < 22)  && (count_time > 20)){
+      r_forward(0);
+      l_forward(99);
+      buzzer_off();   
+    }
+     else if(count_time < 30 && count_time > 22
+     ){
+     r_forward(99);
+     l_forward(99);
+    // motorbreak();
+     buzzer_off();
+     }*/
+     else{
+     r_forward(0);
+     l_forward(0);
+
+    // motorbreak();
+     //buzzer_on();
+       
+     }
+     
+     count_time++;
+     //ledtest = 1;
+     disp_enc();
+    
     //read_encoder();
-    refresh_imu();  
+    //refresh_imu();
+    //pc.printf("right count =\n\r");  
+    //buzzer_off();
     //  desired_vel = 5; // 5 m per sec
     //  const_Speed();
     //bt.printf("percentage: %3.3f%% ", rxtest.read()*100.0f);
     //bt.printf("normalized: 0x%04X \r\n", rxtest.read_u16());
     //bt.printf("analog val =  \r \n");
-    //IR_module.display_IR();
     //rightMotor.backward(100);
     //leftMotor.backward(100);
 
@@ -130,8 +137,8 @@ int main() {
       }        
     ///*LOOP CODE ENDS HERE*
   }
-
-}
+  return 0;
+} 
 
 
  

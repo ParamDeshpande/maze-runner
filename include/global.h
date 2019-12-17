@@ -7,6 +7,7 @@
 // Serial bt(PA_11, PA_12);  // This one works
 // Serial pc(USBTX, USBRX); 
 
+extern Serial pc;
 
 
 //#define DEBUG
