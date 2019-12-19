@@ -1,0 +1,101 @@
+CAPTAINS_LOG
+
+23/08/19
+Epoch for software arch.
+
+24/08/19
+Received ir sensors.
+Completed IMU calibration interface.
+
+28/08/19
+All tasks listings.
+
+29/08/19
+8:52 AM
+Controller Epoch
+8:56 PM
+Encoder testing successful.
+someone burned out 1 prototype motor.
+
+30/08/19
+6.32 PM
+IR sensors testing init.
+8.02 PM
+IRs are fucked up. Shows 5v op accross LEDs no rev bias current.
+
+3/09/19
+Revised design issues, Green ye youtube guy was a huge help.
+
+4/09/19
+Aimed to complete IMU yaw values and sensor fusion and
+look into Software OS (pref sEOS or systic timers).
+9.34pm
+Dont know how my code is running the first time ?
+Code and design completed for kalman6d used matlabC coder.
+(now you know how :) )
+
+5/09/19
+Corrected/modified kalman code Successfully imported and run kalman code in main.ino
+Looked into curved turnings.
+Research on timers.
+Thinking of moving to standard embedded IDEs instead of Arduino IDE for timer simplicity and using sEOS or systic time settings.
+
+6/09/19
+12.20pm
+Going forward with arduino IDE, not using embedded codes.
+New changes in kalman code reverifying needed.
+
+10/09/19
+10 days to competetion
+Completed IR firing pattern code.
+Purchased batteries 850mAhx2 ~40C, motor driver ICs l293d x2, Bought new IR pairs(x10) for IR sensor module.
+
+11/09/19
+9 days to go
+Resolved IR header object issues.
+Resolved IR hardware issue, entire batch of IR leds were soldered reverse.
+Programmed basic IO for kalman and other vars via global vars.
+
+12/09/19
+8 days to go.
+Looked into Floodfill algorithm / advanced algos for better solving .See references.
+Looked 3d printing skid pads.
+voltage checker algo.
+Debug test codes.
+
+17/09/19
+Looked into Floodfill algorithm got codes for them.
+
+18/09/19
+File inclusion for mazes and speed profiler codes.
+
+19/09/19
+HWARE DEBUGGING.
+
+17/12/19 
+BEEN A LONG TIME 
+COMPETETION ON JAN3 '20 
+ABOUT 16 days remaining
+1.21PM 
+FINISHED TESTING NIGEL WEBB ENCODER CODE TEST 
+INTEGRATION REMAINING |
+ TODAYS AIM 
+INTEGRATE CODES FOR MOTORS AND TEST AND GET DONE WITH MOTOR ISSUES
+10.04 PM 
+DONE INTEGRATING AND FIXING MOTORS AND CODES 
+ISSUES/NOTES 
+TIM 1 is 16 bit timer hence values only until 62235
+
+Whats remaining ??
+TRACK TESTING AND CALIBRATION
+S1 - GET A TRACK 
+S2 - CALIBRATE REMAINING sensors ----------------------------------------------------
+
+18/12/19
+Done with the TRACK
+
+19/12/19
+11.05AM 
+Calibration for encoders started.
+Timer for clock is needed.
+About 1106 steps for 18cm ie 

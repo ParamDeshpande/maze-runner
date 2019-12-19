@@ -4,7 +4,7 @@
   Wanted to use it for upload of telemetry
   type a command and bt port and it will be echoed back
   
-
+  
   pin-HC05  Pin-MBed
    TX   --- PA_12
    RX   --- PA_11
@@ -31,102 +31,54 @@
   ***
   
 */
-#include "mbed.h"
 #include "commons.h"
 #include "multi-serial-command-listener.h"
 #include "IR.h"
 #include "imu.h"
-#include "encoder.h"
 #include "motor_commons.h"
-#include "actuator.h"
-#include "buzzer.h"
 
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
-int char_int =0;
-void char_to_int(void){
-  char_int = myCommand[0] - '0';
-}
+
+//------------------------------------
+// RealTerm or Teraterm config
+// 9600 bauds, 8-bit data, no parity
+//------------------------------------
+
+//Serial hc05(D1, D0); // PA_2, PA_3 This one does not work because redirected to USBTX, USBRX
+//                     //  can be fixed by changing solder bridges                      
 Serial bt(PA_11, PA_12);  // This one works
-Serial pc(PA_2, PA_3);    // WORKS AFTER CHANGING SOLDER BRIDGES
-    
+Serial pc(USBTX, USBRX); 
+ 
+//DigitalOut myled(LED1); DEFINED ELSEWHERE
+
+
 //FUNCTION PROTOTYPES
 void commandCallback(char *, void *); 
 
-int main(void) {
-  ///*MAIN SETUP BEGINS HERE***********
 
+int main() {
+  /*MAIN SETUP BEGINS HERE*/
   pc.baud(9600);
   bt.baud(9600);
-  int count_time = 0;
-  encoder_init();
+
   int i = 1;
   struct SCMD *cmdProc = scMake(&bt, commandCallback, NULL)  ;
+
   pc.printf("Test HC05 Bluetooth Connection !\r\n");
   imu_setup();
-  ///*MAIN SETUP ENDS HERE*     
+  
+  /*MAIN SETUP ENDS HERE*/
   
   while(1) { 
-    ///*LOOP CODE BEGINS HERE*
-    //IR_module.fire_and_get();
-    //IR_module.display_IR();
-    
-   // bt.printf(" | f_l %3.3f%% | ",front_left_IR );
-     if(count_time < 100){
-      r_backward(count_time);
-      l_forward(count_time);
-      buzzer_off();   
-     }
-     /*
-    else if((count_time < 22)  && (count_time > 20)){
-      r_forward(0);
-      l_forward(99);
-      buzzer_off();   
-    }
-     else if(count_time < 30 && count_time > 22
-     ){
-     r_forward(99);
-     l_forward(99);
-    // motorbreak();
-     buzzer_off();
-     }*/
-     else{
-     r_forward(0);
-     l_forward(0);
-
-    // motorbreak();
-     //buzzer_on();
-       
-     }
-     
-     count_time++;
-     //ledtest = 1;
-     disp_enc();
-    
-    //read_encoder();
-    //refresh_imu();
-    //pc.printf("right count =\n\r");  
-    //buzzer_off();
-    //  desired_vel = 5; // 5 m per sec
-    //  const_Speed();
-    //bt.printf("percentage: %3.3f%% ", rxtest.read()*100.0f);
-    //bt.printf("normalized: 0x%04X \r\n", rxtest.read_u16());
-    //bt.printf("analog val =  \r \n");
-    //rightMotor.backward(100);
-    //leftMotor.backward(100);
-
-    //Lenable = 1;
-    //Linput1 = 1;
-    //Linput2 = 0;
-
-    //r_forward(20);
-    //l_backward(20);
- 
-
-    //main_controller(10,0);
+    /*LOOP CODE BEGINS HERE*/
+      wait(1);
+      //IR_module.fire_and_get();
+      refresh_imu();  
+      
       //bt.printf("PA_11/PA_12 %d seconds\r\n", i);
-      //*bt.printf("front_left_IR value %d \r\n", front_left_IR);
-     // myled = !myled;
+      /*bt.printf("front_left_IR value %d \r\n", front_left_IR);
+      myled = !myled;
       if (myCommand[0] != 0) {     
           pc.printf("Command Recieved =%s\r\n", myCommand);
           bt.printf("\r\nCommand Recieved =%s\r\n", myCommand);
@@ -135,10 +87,10 @@ int main(void) {
           }
           myCommand[0] = 0; // clear until we recieve the next command
       }        
-    ///*LOOP CODE ENDS HERE*
+    /*LOOP CODE ENDS HERE*/
   }
-  return 0;
-} 
+
+}
 
 
  
@@ -154,4 +106,3 @@ void commandCallback(char *cmdIn, void *extraContext) {
   // See data_log one of dependants of this library for example 
   // of using *extraContext
 }
-//*/

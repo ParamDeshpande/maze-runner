@@ -1,11 +1,10 @@
 
 #include "../include/commons.h"
 #include "../include/encoder.h"
-
-
-    int64_t EncoderPosition_TIM1 = 0;
-    int64_t EncoderPosition_TIM2 = 0;
-
+ 
+    int16_t EncoderPosition_TIM1 ;
+    int16_t EncoderPosition_TIM2 ;
+    
     
 /* 
     Connections Encoder 2
@@ -94,8 +93,8 @@ void disp_enc(void) {
         // Print Encoder Quadrature count to debug port every 0.5 seconds
         EncoderPosition_TIM1 = TIM1->CNT ; // Get current position from Encoder
         EncoderPosition_TIM2 = TIM2->CNT ; // Get current position from Encoder
-        printf("Left count = %lli \n", EncoderPosition_TIM1); // Position of Left Encoder
-        printf("Right count = %lli \n", EncoderPosition_TIM2); // Position of Right Encoder
+        printf("Left count = %i \n", EncoderPosition_TIM1); // Position of Left Encoder
+        printf("Right count = %i \n", EncoderPosition_TIM2); // Position of Right Encoder
         wait(0.5);
    
        
