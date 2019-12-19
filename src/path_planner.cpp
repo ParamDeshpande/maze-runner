@@ -6,6 +6,26 @@
 
 #include "../include/maze_commons.h"
 
+
+#define TURN_RIGHT_COUNT 1900      //1900 for fake maze
+#define TURN_LEFT_COUNT 1850      //1850 for fake maze +/- 50
+#define TURN_AROUND_COUNT 3000    //3000 for fake maze
+#define ONECELL 0.25//  M          //7200 for fake maze
+
+
+//constants for wall sensing left/right/front
+#define hasLeftWall 0.7//% //190 for fake maze
+#define hasRightWall 10.0 //  //220 for fake maze; 120 for real maze
+#define hasFrontWall 7  //300 for fake maze; 
+//IR THRESHOLD min dist before stopping
+#define PIDSTOP 600    //600 for fake maze;
+#define LEFTPID 200    //200 for fake maze
+#define RIGHTPID 350  //350 for fake maze
+//maybe define new ones for wall sensing for the floodfill
+
+
+
+
 bool check_left_wall(void) {
   if ((side_left_IR > hasLeftWall)){
     return TRUE;
@@ -99,29 +119,6 @@ void maintain_pos_and_orient(void){
   }
   
 }//*/
-
-
-
-double previous_x =0;
-double previous_yaw = 0;
-double previous_vel = 0 ;
-double previous_w = 0 ;
-
-void update_states(){
-  current_yaw = yawGyro_rads;
-  current_x = (left_enc_dist + right_enc_dist)/2;
-  
-  current_vel = (current_x - previous_x)/delT ;//
-  current_w = (current_yaw - previous_yaw)/delT ;
-  
-
-  //UPDATING PREVIOUS VALUES
-  previous_x = current_x ;
-  previous_yaw = current_yaw ;
-
-}
-
-
 
 
 /** Function: change_dir ****ONLY FUNCTION THAT TOUCHES THE MAIN PROGRAM*****

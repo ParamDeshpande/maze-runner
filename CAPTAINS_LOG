@@ -99,3 +99,18 @@ Done with the TRACK
 Calibration for encoders started.
 Timer for clock is needed.
 About 1106 steps for 18cm ie 
+TO DO 
+TEST IMU modified code 
+(shites ) using yawGyro
+
+CAlC current speed and w
+done ish.
+
+Do path planner and speed profiler.
+Aim 
+resolve controller parameters
+Well before that I need to the state estimation problem
+CAn i do it without something complex YES.
+
+
+Get w from encoders. THAT FORMULA IS FOR CURVE TURN W 

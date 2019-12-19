@@ -8,7 +8,7 @@
 // Serial pc(USBTX, USBRX); 
 
 extern Serial pc;
-
+extern Timer t_global ;
 
 //#define DEBUG
 
@@ -18,16 +18,6 @@ extern Serial pc;
 #define TRUE true
 #define FALSE false
 
-extern float front_left_IR  ;  
-extern float front_right_IR ;  
-extern float diag_left_IR   ;  
-extern float diag_right_IR  ;  
-extern float side_left_IR   ;  
-extern float side_right_IR  ;  
-
-
-#define MAX_W_ACLKWISE -4*M_PI //rads per sec
-#define MAX_W_CLKWISE 4*M_PI //rads per sec
 
 
 //Super important dont change UL.
@@ -38,40 +28,8 @@ extern float side_right_IR  ;
 #define D_2_RAD(degrees) degrees*M_PI/180.0f
 #define RADS_2_D(rads) rads*180.0f/M_PI
 
-#define angleSumFiftyK 0   //14.671313 //DO edit after analysis 50K samples.
 
-#define minimum_battery_voltage 7
-
-#define delT 1e-3
-
-
-//constants for encoder to turn right/left/180
-#define TURN_RIGHT_COUNT 1900      //1900 for fake maze
-#define TURN_LEFT_COUNT 1850      //1850 for fake maze +/- 50
-#define TURN_AROUND_COUNT 3000    //3000 for fake maze
-#define ONECELL 0.25//  M          //7200 for fake maze
-
-
-// infinity values
-
-//
-//
-//
-//
-//
-//
-//
-//
-
-//constants for wall sensing left/right/front
-#define hasLeftWall 0.7//% //190 for fake maze
-#define hasRightWall 10.0 //  //220 for fake maze; 120 for real maze
-#define hasFrontWall 7  //300 for fake maze; 
-//IR THRESHOLD min dist before stopping
-#define PIDSTOP 600    //600 for fake maze;
-#define LEFTPID 200    //200 for fake maze
-#define RIGHTPID 350  //350 for fake maze
-//maybe define new ones for wall sensing for the floodfill
+extern double delT ;
 
 
 //MOTOR
@@ -79,35 +37,16 @@ extern float side_right_IR  ;
 
 //Change these values
 //PID GAINS 
-#define x_Kp 0UL
-#define x_Ki 0UL
-#define x_Kd 0UL
-#define w_Kp 0UL
-#define w_Ki 0UL
-#define w_Kd 0UL
 
-//Kalman Parameters
-#define calc_var_x 1000UL
-#define calc_var_vel 1000UL
-#define calc_var_x_acc 1000UL
-#define calc_var_yaw D_2_RAD(0.05)
-#define calc_var_w 1000UL
 
-#define measure_var_l_enc 1000UL
-#define measure_var_r_enc 1000UL
-#define measure_var_accelX 1000UL
-#define measure_var_yawGyro D_2_RAD(0.05)
-#define measure_var_yawAccel D_2_RAD(500000)
-#define measure_var_yawMag D_2_RAD(1500000)
 
-#define constVel_speed 0UL
-#define pivot_w 0UL
-#define pivot_turn_Speed 0UL
+
+
+
 
 extern double desired_vel ;
 extern double desired_x_acc ;
 extern double desired_w  ;
-
 
 extern double current_x;
 extern double current_vel;
@@ -115,9 +54,6 @@ extern double current_x_acc ;
 
 extern double current_yaw ;
 extern double current_w;
-
-extern double left_enc_dist ;
-extern double right_enc_dist;
 
 extern double accelX;
 extern double yawGyro_rads;

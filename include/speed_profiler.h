@@ -1,6 +1,9 @@
 #ifndef SPEED_PROFILES_H
 #define SPEED_PROFILES_H
 
+#define MAX_W_ACLKWISE -4*M_PI //rads per sec
+#define MAX_W_CLKWISE 4*M_PI //rads per sec
+
 //Function proototypes
 void const_Speed(void);
 void pivot_left(void);

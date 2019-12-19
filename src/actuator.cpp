@@ -84,8 +84,8 @@ Motor::Motor(PinName enablePinNo,PinName input1PinNo,PinName input2PinNo){ //con
   }
 
 
-//Motor rightMotor(rme,rmi1,rmi2);
-//Motor leftMotor(lme,lmi1,lmi2);
+Motor rightMotor(rme,rmi1,rmi2);
+Motor leftMotor(lme,lmi1,lmi2);
 
 
 /**************END_OF_FILE*****************/

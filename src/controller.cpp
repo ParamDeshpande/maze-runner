@@ -1,3 +1,6 @@
+//DOES PID AND STUFF
+
+
 #include"../include/commons.h"
 
 #include "../include/controller.h"
@@ -11,14 +14,13 @@ double current_x_acc = 0 ;
 double current_yaw = 0 ;
 double current_w = 0 ;
 
-
-//Private variables
-static double x_pos = 0;
-static double x_vel = 0 ;
-static double x_acc = 0 ;
-static double ang = 0 ;
-static double ang_w = 0 ;
-
+//PRIVATE VARS
+static float x_Kp = 10;
+static float x_Ki = 1e5;
+static float x_Kd = 0;
+static float w_Kp ;
+static float w_Ki ;
+static float w_Kd ;
 
 static double vel_pwm = 0;
 static double w_pwm = 0;
@@ -29,15 +31,21 @@ static double w_Error = 0;
 static double x_Error = 0;
 static double ang_Error = 0;
 
-#ifndef DEBUG_CONTROLLER
+#ifndef DEBUG_CONTROLLER 
 static double leftMotorPWM = 0;
 static double rightMotorPWM = 0;
 #endif // DEBUG_CONTROLLER
 
+
+
 void main_controller(double desired_vel, double desired_w ){
 
-    current_vel = x_vel;
-    current_w = ang_w;
+    
+    #ifdef DEBUG_VIA_PRINTF
+    pc.printf("delT is %f\n\r", delT);
+    #endif // DEBUG
+    //current_vel = x_vel;
+    //current_w = ang_w;
     
     vel_Error = desired_vel - current_vel;
     w_Error = desired_w - current_w;
@@ -77,7 +85,12 @@ void main_controller(double desired_vel, double desired_w ){
 
     #endif // DEBUG_CONTROLLER
 
+ 
+}
 
+void kill_motion(void){
+  leftMotor.forward(0);
+  rightMotor.forward(0);
 }
 
 /*

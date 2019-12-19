@@ -1,5 +1,3 @@
-
- 
 /* MPU9250 Basic Example Code
  by: Kris Winer
  date: April 1, 2014
@@ -28,11 +26,26 @@
  We are also using the 400 kHz fast I2C mode by setting the TWI_FREQ  to 400000L /twi.h utility file.
  */
  
-#include "../lib/ST_F401_84MHZ.h" 
-F401_init84 myinit(0);
+//#include "ST_F401_84MHZ.h" 
+//F401_init84 myinit(0);
 #include "commons.h"
 #include "../lib/MPU9250.h"
 #include "imu.h"
+
+
+#define angleSumFiftyK 0   //14.671313 //DO edit after analysis 50K samples.
+
+
+// int imu_count = 0;
+//#include "N5110.h"
+
+// Using NOKIA 5110 monochrome 84 x 48 pixel display
+// pin 9 - Serial clock out (SCLK)
+// pin 8 - Serial data out (DIN)
+// pin 7 - Data/Command select (D/C)
+// pin 5 - LCD chip select (CS)
+// pin 6 - LCD reset (RST)
+//Adafruit_PCD8544 display = Adafruit_PCD8544(9, 8, 7, 5, 6);
 
 //imu_setup()
 //display_imu()
@@ -107,7 +120,7 @@ void imu_setup(void){
     }
 
 }   
-
+int Countt = 0;
 double yawGyro_rads =0;
 
 void refresh_imu(void)
@@ -147,13 +160,27 @@ void refresh_imu(void)
     my = (float)magCount[1]*mRes*magCalibration[1] - magbias[1];  
     mz = (float)magCount[2]*mRes*magCalibration[2] - magbias[2];   
   }
+   
+    Now = t.read_us();
+    deltat = (float)((Now - lastUpdate)/1000000.0f) ; // set integration time by time elapsed since last filter update
+    lastUpdate = Now;
+    
+    sum += deltat;
+    sumCount++;
+    
+    //    if(lastUpdate - firstUpdate > 10000000.0f) {
+    //     beta = 0.04;  // decrease filter gain after stabilized
+    //     zeta = 0.015; // increasey bias drift gain after stabilized
+    //   }
     
     // Pass gyro rate as rad/s
     //  mpu9250.MadgwickQuaternionUpdate(ax, ay, az, gx*PI/180.0f, gy*PI/180.0f, gz*PI/180.0f,  my,  mx, mz);
     mpu9250.MahonyQuaternionUpdate(ax, ay, az, gx*PI/180.0f, gy*PI/180.0f, gz*PI/180.0f, my, mx, mz);
-    tempCount = mpu9250.readTempData();  // Read the adc values
-    temperature = ((float) tempCount) / 333.87f + 21.0f; // Temperature in degrees Centigrade
-    
+
+    // Serial print and/or display at 0.5 s rate independent of data rates
+    delt_t = t.read_ms() - imu_count;
+    if (delt_t > 500) { // update LCD once per half-second independent of read rate
+
     //bt.printf("ax = %f", 1000*ax); 
     //bt.printf(" ay = %f", 1000*ay); 
     //bt.printf(" az = %f  mg\n\r", 1000*az); 
@@ -166,6 +193,8 @@ void refresh_imu(void)
     //bt.printf(" gy = %f", my); 
     //bt.printf(" gz = %f  mG\n\r", mz); 
     
+    tempCount = mpu9250.readTempData();  // Read the adc values
+    temperature = ((float) tempCount) / 333.87f + 21.0f; // Temperature in degrees Centigrade
     //bt.printf(" temperature = %f  C\n\r", temperature); 
     
     //bt.printf("q0 = %f\n\r", q[0]);
@@ -173,6 +202,16 @@ void refresh_imu(void)
     //bt.printf("q2 = %f\n\r", q[2]);
     //bt.printf("q3 = %f\n\r", q[3]);      
     
+/*    lcd.clear();
+    lcd.printString("MPU9250", 0, 0);
+    lcd.printString("x   y   z", 0, 1);
+    sprintf(buffer, "%d %d %d mg", (int)(1000.0f*ax), (int)(1000.0f*ay), (int)(1000.0f*az));
+    lcd.printString(buffer, 0, 2);
+    sprintf(buffer, "%d %d %d deg/s", (int)gx, (int)gy, (int)gz);
+    lcd.printString(buffer, 0, 3);
+    sprintf(buffer, "%d %d %d mG", (int)mx, (int)my, (int)mz);
+    lcd.printString(buffer, 0, 4); 
+ */  
   // Define output variables from updated quaternion---these are Tait-Bryan angles, commonly used in aircraft orientation.
   // In this coordinate system, the positive z-axis is down toward Earth. 
   // Yaw is the angle between Sensor x-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
@@ -182,22 +221,20 @@ void refresh_imu(void)
   // Tait-Bryan angles as well as Euler angles are non-commutative; that is, the get the correct orientation the rotations must be
   // applied in the correct order which for this configuration is yaw, pitch, and then roll.
   // For more see http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles which has additional links.
-
     yaw   = atan2(2.0f * (q[1] * q[2] + q[0] * q[3]), q[0] * q[0] + q[1] * q[1] - q[2] * q[2] - q[3] * q[3]);   
-
+ 
     yawGyro_rads +=  (gz*(50000) - angleSumFiftyK)/50000;
     pitch = -asin(2.0f * (q[1] * q[3] - q[0] * q[2]));
     roll  = atan2(2.0f * (q[0] * q[1] + q[2] * q[3]), q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]);
     pitch *= 180.0f / PI;
-    yaw   *= 180.0f / PI; 
-    yaw   -= 13.8f; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04 (magnetic degs)
-    // MUMBAI IT IS 0deg 3mins 
-    yaw -= 0.05;   
-    
+    //yaw   *= 180.0f / PI; 
+    //yaw   -= 13.8f; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04 (magnetic degs)
+    // MUMBAI IT IS 0deg 3mins    
     roll  *= 180.0f / PI;
 
-    bt.printf("Yaw: %f , yaw GYRO:%f  \n\r",yaw, yawGyro_rads);
-    pc.printf("Yaw: %f , yaw GYRO:%f  \n\r",yaw, yawGyro_rads);
+    //countt
+    bt.printf(" i = %d , Yaw: %f , yaw GYRO:%f  \n\r",Countt, yaw, yawGyro_rads);
+    pc.printf(" i = %d , Yaw: %f , yaw GYRO:%f  \n\r",Countt, yaw, yawGyro_rads);
     
     //bt.printf("average rate = %f\n\r", (float) sumCount/sum);
 //    sprintf(buffer, "YPR: %f %f %f", yaw, pitch, roll);
@@ -205,4 +242,18 @@ void refresh_imu(void)
 //    sprintf(buffer, "rate = %f", (float) sumCount/sum);
 //    lcd.printString(buffer, 0, 5);
     
+    myled= !myled;
+    imu_count = t.read_ms(); 
+
+    if(imu_count > 1<<21) {
+        t.start(); // start the timer over again if ~30 minutes has passed
+        imu_count = 0;
+        deltat= 0;
+        lastUpdate = t.read_us();
+    }
+    sum = 0;
+    sumCount = 0; 
+  }
+
+ 
 }

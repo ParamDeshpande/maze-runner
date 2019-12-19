@@ -1,11 +1,13 @@
 
 #include "../include/commons.h"
 #include "../include/encoder.h"
- 
-    int16_t EncoderPosition_TIM1 ;
-    int16_t EncoderPosition_TIM2 ;
-    
-    
+
+//GLOBAL VARS
+int16_t EncoderPosition_TIM1 ;
+int16_t EncoderPosition_TIM2 ;
+
+
+
 /* 
     Connections Encoder 2
     PA_0 = Encoder_2 A   A0
@@ -87,15 +89,33 @@ void encoder_init(void){
   
 }
 
+int8_t encoder_cycle_count = 0; 
 
-void disp_enc(void) {
+void cycle_slayer(int n_th_cycle, int tim1, int tim2){
+    tim1 = tim1 + n_th_cycle*65535;
+    tim2 = tim2 + n_th_cycle*65535;
+
+}
+
+#define DEBUG_VIA_PRINTF
+
+void feed_enc(void) {
     
+        
+        //if( (EncoderPosition_TIM1 == 65536) || (EncoderPosition_TIM2 == 65536) ){
+        //    ZeroEncoderCount_TIM1();
+        //    ZeroEncoderCount_TIM2();
+        //    encoder_cycle_count++;
+        //}
         // Print Encoder Quadrature count to debug port every 0.5 seconds
         EncoderPosition_TIM1 = TIM1->CNT ; // Get current position from Encoder
         EncoderPosition_TIM2 = TIM2->CNT ; // Get current position from Encoder
+        
+        //cycle_slayer(encoder_cycle_count,EncoderPosition_TIM1,EncoderPosition_TIM2);
+
+        #ifdef DEBUG_VIA_PRINTF
         printf("Left count = %i \n", EncoderPosition_TIM1); // Position of Left Encoder
         printf("Right count = %i \n", EncoderPosition_TIM2); // Position of Right Encoder
-        wait(0.5);
-   
-       
+        #endif  
+             
 }

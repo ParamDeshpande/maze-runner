@@ -1,6 +1,9 @@
 #include "commons.h"
 #include "buzzer.h"
 
+
+#define minimum_battery_voltage 7
+
 DigitalOut buzzer(buzzer_Pin);     
 
 void buzzer_on(void){

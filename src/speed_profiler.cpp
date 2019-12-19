@@ -1,3 +1,4 @@
+// DOES DIRECTION CONTROL WAS BUILT FOR CURVED TURNS
 
 #include"../include/commons.h"
 
@@ -20,6 +21,7 @@ For curve turns need explicit parameters.
 //x_Speed (m/s)    YEP
 
 
+
 //Global
 double desired_vel = 0;
 double desired_w = 0 ;
@@ -39,31 +41,6 @@ void const_Speed(void){
     yaw_Speed = desired_w;
     main_controller(x_Speed,yaw_Speed);
 }
-
-void pivot_left(void){
-
-    x_Speed = 0;
-    //if(yaw_Speed)
-    yaw_Speed = pivot_w;
-    
-    current_vel = 0;
-    
-    main_controller(x_Speed,yaw_Speed);
-
-}
-
-
-void pivot_right(void){
-
-    x_Speed = 0;
-    //if(yaw_Speed)
-    yaw_Speed = pivot_w;
-    
-    current_vel = 0;
-    
-    main_controller(x_Speed,yaw_Speed);
-
-}
 void curved_turn_left(void){
 
 }
@@ -73,7 +50,7 @@ void curved_turn_right(void){
 }
 
 void motorbreak(void){
-    main_controller(0,0);
+    kill_motion();
 }
 
 
