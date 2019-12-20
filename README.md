@@ -7,6 +7,8 @@ Install Platfform IO on VSCODE.
 **Prerequesites**
 
 ## Running the tests
+Find the prep status [here.](https://drive.google.com/open?id=1-eQ2nXyGDYVZK9yOKf7hg_DRZSjU1Mvo)
+
 
 ## Authors
 
