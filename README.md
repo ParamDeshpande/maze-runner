@@ -2,7 +2,7 @@
 Micromouse maze solver  
 
 ## Getting started 
-For [technoxian](https://www.technoxian.com/) competetion 2019 
+Install Platfform IO on VSCODE.
 
 **Prerequesites**
 
