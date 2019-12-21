@@ -133,3 +133,10 @@ Considering to add a 2nd 7805 POWER SUPPLY TO BALANCE IT.
  Either way need to test runtime of each function
 How do I test runtimes in PIO CODE ?
 
+One way declare t.start at beginning of each function being tested ...
+2 way LOOK ONline.
+GOING WITH 1st option coz of procastination ...
+looked 2nd option .. not much use
+
+Starting with major functions ...
+main_controller - 

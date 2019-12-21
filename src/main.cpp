@@ -53,6 +53,8 @@ void char_to_int(void){
 Serial bt(PA_11, PA_12);  // This one works
 Serial pc(USBTX, USBRX);     // WORKS AFTER CHANGING SOLDER BRIDGES
 
+#define DEBUG
+
 #ifdef DEBUG
 Timer t_global ;
 // PRIVATE VARS
@@ -71,36 +73,23 @@ int main(void) {
   ///*MAIN SETUP BEGINS HERE***********
   pc.baud(9600);
   bt.baud(9600);
-  int count_time = 0;
 
-  //encoder_init();
-  //imu_setup();
   /////*MAIN SETUP ENDS HERE*
   #ifdef DEBUG
-  t_global.start();
   #endif // DEBUG     
 
-  //r_backward(0);
-  //l_forward(0);
   while(1) { 
     ///*LOOP CODE BEGINS HERE*
+      t_global.start();
+      last_time = t_global.read_ms();
+      
     #ifdef DEBUG
-      now = t_global.read_ms();
-      delT = now - last_time;
+    main_controller(0,0);
     #endif // DEBUG
-      if(count_time < 100){
-        r_backward(count_time);
-        l_forward(count_time);
-     }
     
-    count_time++;
-    
-    #ifdef DEBUG
-    last_time = now;
-    calc_state();
-    #endif // DEBUG
+    now = t_global.read_ms();
+    delT = now - last_time;
 
-    wait_ms(5000);
     ///*LOOP CODE ENDS HERE*
   }
   return 0;

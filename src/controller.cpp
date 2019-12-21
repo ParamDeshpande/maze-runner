@@ -63,25 +63,19 @@ void main_controller(double desired_vel, double desired_w ){
      //x_PD controller.
     vel_pwm = x_Kp*vel_Error +  x_Ki*x_Error +  x_Kd*vel_Error/delT  ;
     w_pwm = w_Kp*w_Error + w_Ki*ang_Error + w_Kd*ang_Error/delT ;
-    //RUN NORMALLY
-    #ifdef DEBUG_CONTROLLER
-    leftMotor.forward(vel_pwm - w_pwm);
-    rightMotor.forward(vel_pwm + w_pwm);
-    #endif // DEBUG_CONTROLLER
-
-
+    
     #ifndef DEBUG_CONTROLLER
     leftMotorPWM = vel_pwm - w_pwm;
     rightMotorPWM = vel_pwm + w_pwm;
     if(leftMotorPWM >0)
-      leftMotor.forward(leftMotorPWM);
+      l_forward(leftMotorPWM);
     else  //If negative
-      leftMotor.backward(-leftMotorPWM);
+      l_backward(-leftMotorPWM);
     
     if(rightMotorPWM >0)
-      rightMotor.forward(rightMotorPWM);
+      r_forward(rightMotorPWM);
     else  //If negative
-      rightMotor.backward(-rightMotorPWM);
+      r_backward(-rightMotorPWM);
 
     #endif // DEBUG_CONTROLLER
 
@@ -89,8 +83,8 @@ void main_controller(double desired_vel, double desired_w ){
 }
 
 void kill_motion(void){
-  leftMotor.forward(0);
-  rightMotor.forward(0);
+  l_forward(0);
+  r_forward(0);
 }
 
 /*
