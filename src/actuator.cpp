@@ -80,10 +80,8 @@ Motor::Motor(PinName enablePinNo,PinName input1PinNo,PinName input2PinNo){ //con
     input2 = HIGH;
 
   }
-
+//#define DEBUG
 #ifdef DEBUG
-Motor rightMotor(rme,rmi1,rmi2);
-Motor leftMotor(lme,lmi1,lmi2);
 #endif // DEBUG
 
 
