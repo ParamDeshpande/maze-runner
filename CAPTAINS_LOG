@@ -121,3 +121,15 @@ Get w from encoders. THAT FORMULA IS FOR CURVE TURN W
 THE 2nd 7805 burned up, in one day. SHITES AGAIN.
 Considering to add a 2nd 7805 POWER SUPPLY TO BALANCE IT.
  
+
+ 22/12/19
+ 12.51 AM 
+ BOUGHT THE BUCK CONVERTER(x3 just in case. ...) YESTERDAY( technically )
+ Soldered it, runs good.
+ Found the issue causing the PWM pin trouble, had declared motor objects in actuactor.cpp
+ PART 2 
+ GET EACH FUNCTIONS RUNTIME AND PROGRAM SYSTICK TIMER ? 
+ Why systick ? Dont know , confused if dt chages vfrequnetly .....
+ Either way need to test runtime of each function
+How do I test runtimes in PIO CODE ?
+

@@ -89,8 +89,8 @@ int main(void) {
       delT = now - last_time;
     #endif // DEBUG
       if(count_time < 100){
-        r_backward(0);
-        l_forward(0);
+        r_backward(count_time);
+        l_forward(count_time);
      }
     
     count_time++;
