@@ -6,9 +6,7 @@ short int enable;
 short int input1;
 short int input2;
 
-#include "mbed.h"
-#include "mbed.h"
- 
+#include "mbed.h" 
 
     PwmOut r_enable(rme);
     //DigitalOut r_enable(rme);
@@ -83,9 +81,10 @@ Motor::Motor(PinName enablePinNo,PinName input1PinNo,PinName input2PinNo){ //con
 
   }
 
-
+#ifdef DEBUG
 Motor rightMotor(rme,rmi1,rmi2);
 Motor leftMotor(lme,lmi1,lmi2);
+#endif // DEBUG
 
 
 /**************END_OF_FILE*****************/

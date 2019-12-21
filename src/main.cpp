@@ -55,15 +55,13 @@ Serial pc(USBTX, USBRX);     // WORKS AFTER CHANGING SOLDER BRIDGES
 
 #ifdef DEBUG
 Timer t_global ;
-
-
-#endif // DEBUG
-double delT ;  
-
 // PRIVATE VARS
 
 static double now = 0;
 static double last_time = 0;
+#endif // DEBUG
+
+double delT ;  
 
 
 //FUNCTION PROTOTYPES
@@ -90,23 +88,19 @@ int main(void) {
       now = t_global.read_ms();
       delT = now - last_time;
     #endif // DEBUG
-
-
       if(count_time < 100){
-        r_backward(count_time);
-        l_forward(count_time);
+        r_backward(0);
+        l_forward(0);
      }
-    // else{  
-    //// motorbreak();
-    // }
-    calc_state();
+    
     count_time++;
     
     #ifdef DEBUG
     last_time = now;
+    calc_state();
     #endif // DEBUG
 
-    wait(0.5);
+    wait_ms(5000);
     ///*LOOP CODE ENDS HERE*
   }
   return 0;
