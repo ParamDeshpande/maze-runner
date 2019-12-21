@@ -83,11 +83,12 @@ int main(void) {
       t_global.start();
       last_time = t_global.read_ms();
       
-    #ifdef DEBUG
+    //#ifdef DEBUG
     main_controller(0,0);
-    #endif // DEBUG
+    //#endif // DEBUG
     
-    now = t_global.read_ms();
+    now = t_global.read_us();
+    t_global.stop();
     delT = now - last_time;
 
     ///*LOOP CODE ENDS HERE*
@@ -96,9 +97,6 @@ int main(void) {
 } 
 
 /*
-
-
-
  //IR_module.fire_and_get();
     //IR_module.display_IR();
     
