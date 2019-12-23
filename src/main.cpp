@@ -76,6 +76,7 @@ int main(void) {
 
   /////*MAIN SETUP ENDS HERE*
   #ifdef DEBUG
+  encoder_init();
   #endif // DEBUG     
 
   while(1) { 
@@ -83,9 +84,11 @@ int main(void) {
       t_global.start();
       last_time = t_global.read_ms();
       
-    //#ifdef DEBUG
-    main_controller(0,0);
-    //#endif // DEBUG
+    #ifdef DEBUG
+    l_forward(5);
+    r_backward(5);
+    feed_enc();
+    #endif // DEBUG
     
     now = t_global.read_us();
     t_global.stop();

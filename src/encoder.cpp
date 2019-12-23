@@ -2,11 +2,34 @@
 #include "../include/commons.h"
 #include "../include/encoder.h"
 
+
+#define DEBUG_VIA_PRINTF
+
 //GLOBAL VARS
-int16_t EncoderPosition_TIM1 ;
-int16_t EncoderPosition_TIM2 ;
+int64_t L_enc_position = 0;
+int64_t R_enc_position = 0;
+
+// Private vars 
+int16_t EncoderPosition_TIM1 = 0;
+int16_t EncoderPosition_TIM2 = 0;
+
+static int8_t encoder_1_cycle_count = 0;
+static int8_t encoder_2_cycle_count = 0;
+static int16_t tim1_buffer[2] = {0}; // These contain values just before and just after overflow
+static int16_t tim2_buffer[2] = {0}; // These contain values just before and just after overflow
+static int64_t tim1_offset = 0 ; //WCscenario
+static int64_t tim2_offset = 0 ; //WCscenario
+static bool about_to_overflow_tim1 = FALSE;
+static bool about_to_overflow_tim2 = FALSE;
 
 
+//static Function prototypes 
+void EncoderInitialise_TIM2(void);
+void ZeroEncoderCount_TIM2();
+void ZeroEncoderCount_TIM1();
+void EncoderInitialise_TIM1(void);
+static void check_overflow_tim1(void);
+static void check_overflow_tim2(void);
 
 /* 
     Connections Encoder 2
@@ -89,33 +112,65 @@ void encoder_init(void){
   
 }
 
-int8_t encoder_cycle_count = 0; 
 
-void cycle_slayer(int n_th_cycle, int tim1, int tim2){
-    tim1 = tim1 + n_th_cycle*65535;
-    tim2 = tim2 + n_th_cycle*65535;
-
+static void check_overflow_tim1(void){
+    
+    if(EncoderPosition_TIM1 > 30000){
+        about_to_overflow_tim1 = HIGH;
+        tim1_buffer[0] = EncoderPosition_TIM1;
+    }
+    if((about_to_overflow_tim1 == HIGH) && (EncoderPosition_TIM1 < 0)){
+        about_to_overflow_tim1 = LOW;
+        tim1_buffer[1] = EncoderPosition_TIM1;
+        ++encoder_1_cycle_count;
+        int16_t diff_pos = 32767 - tim1_buffer[0];
+        int16_t diff_neg = 32768 + tim1_buffer[1];
+        tim1_offset = (int64_t)(tim1_buffer[0] + diff_pos + diff_neg);
+        ZeroEncoderCount_TIM1();
+        EncoderPosition_TIM1 = TIM1->CNT ;
+    }    
+    L_enc_position = EncoderPosition_TIM1 + encoder_1_cycle_count*tim1_offset;
+   
 }
 
-#define DEBUG_VIA_PRINTF
+
+static void check_overflow_tim2(void){
+    
+    if(EncoderPosition_TIM2 > 30000){
+        about_to_overflow_tim2 = HIGH;
+        tim2_buffer[0] = EncoderPosition_TIM2;
+    }
+    if((about_to_overflow_tim2 == HIGH) && (EncoderPosition_TIM2 < 0)){
+        about_to_overflow_tim2 = LOW;
+        tim2_buffer[1] = EncoderPosition_TIM2;//a -ve value 
+        ++encoder_2_cycle_count;
+        int16_t diff_pos = 32767 - tim2_buffer[0];
+        int16_t diff_neg = 32768 + tim2_buffer[1];
+        tim2_offset = (int64_t)(tim2_buffer[0] + diff_pos + diff_neg);
+        ZeroEncoderCount_TIM2();
+        EncoderPosition_TIM2 = TIM2->CNT ;
+    }    
+    R_enc_position = EncoderPosition_TIM2 + encoder_2_cycle_count*tim2_offset;
+   
+}
+
 
 void feed_enc(void) {
     
-        
-        //if( (EncoderPosition_TIM1 == 65536) || (EncoderPosition_TIM2 == 65536) ){
-        //    ZeroEncoderCount_TIM1();
-        //    ZeroEncoderCount_TIM2();
-        //    encoder_cycle_count++;
-        //}
         // Print Encoder Quadrature count to debug port every 0.5 seconds
         EncoderPosition_TIM1 = TIM1->CNT ; // Get current position from Encoder
         EncoderPosition_TIM2 = TIM2->CNT ; // Get current position from Encoder
         
-        //cycle_slayer(encoder_cycle_count,EncoderPosition_TIM1,EncoderPosition_TIM2);
+       check_overflow_tim1();
+       check_overflow_tim2();
 
         #ifdef DEBUG_VIA_PRINTF
-        printf("Left count = %i \n", EncoderPosition_TIM1); // Position of Left Encoder
-        printf("Right count = %i \n", EncoderPosition_TIM2); // Position of Right Encoder
+        printf("Left count = %i ",  EncoderPosition_TIM1); // Position of Left Encoder
+        printf("Right count = %i ", EncoderPosition_TIM2); // Position of Right Encoder
+        printf("timer1 buffer value %i ", tim1_buffer[0] );
+        printf("timer1 offet value %i ", tim1_offset );
+        printf("Left ENCA %lli ", L_enc_position );
+        printf("Rifht ENCA %lli \n\r",R_enc_position );
         #endif  
-             
+
 }

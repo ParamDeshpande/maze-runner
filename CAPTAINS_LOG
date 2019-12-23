@@ -139,6 +139,20 @@ GOING WITH 1st option coz of procastination ...
 looked 2nd option .. not much use
 
 Starting with major functions ...
-main_controller - shows 0ms
+main_controller - shows 57us 
+WHOA ... 
+MAYBE I CAN FIX ALL OF IT WITHIN 1MS 
+MAYBE ..
+
 
 TRYing to line all functions TO GET TOTAL TIME EXECUTION.
+
+
+23/12/19
+
+s1 run all functions and get total runtime.
+s2 merge 
+s3 ..
+
+Starting with finishing all the functions
+1 encoder
