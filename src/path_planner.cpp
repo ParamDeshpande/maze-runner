@@ -10,7 +10,7 @@
 #define TURN_RIGHT_COUNT 1900      //1900 for fake maze
 #define TURN_LEFT_COUNT 1850      //1850 for fake maze +/- 50
 #define TURN_AROUND_COUNT 3000    //3000 for fake maze
-#define ONECELL 0.25//  M          //7200 for fake maze
+#define ONECELL 0.18//  M          //7200 for fake maze
 
 
 //constants for wall sensing left/right/front

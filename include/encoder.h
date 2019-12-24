@@ -5,8 +5,8 @@ void feed_enc(void);
 void encoder_init(void);
 
 //GLOBAL VARS
-extern int16_t EncoderPosition_TIM1 ;
-extern int16_t EncoderPosition_TIM2 ;
+extern int64_t L_enc_position = 0;
+extern int64_t R_enc_position = 0;
 
 
 #endif // !1
