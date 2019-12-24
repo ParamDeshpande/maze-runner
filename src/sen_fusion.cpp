@@ -30,7 +30,7 @@ static double prev_yaw = 0;
 
 void calc_state(void){
 feed_enc();
-current_x = ((EncoderPosition_TIM1 + EncoderPosition_TIM2)/(2.0*61.4444*100.0)); //DIST IN METERS (61.444 counts = 1cm)
+//current_x = ((EncoderPosition_TIM1 + EncoderPosition_TIM2)/(2.0*61.4444*100.0)); //DIST IN METERS (61.444 counts = 1cm)
 current_vel = (current_x - prev_x)/delT;
 current_yaw = yawGyro_rads;
 current_w = (current_yaw - prev_yaw)/delT;

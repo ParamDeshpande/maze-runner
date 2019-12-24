@@ -122,12 +122,12 @@ void IR::reset_params(void){
 //int IR_readings[3][2];
 
 void IR::powerUP_Tx(DigitalOut ledPin){
-    ledPin = HIGH;
+    ledPin = LOW;
     //digitalWrite(ledPin, HIGH);
 }
-
+// SINCE PNP transistors are used
 void IR::powerDOWN_Tx(DigitalOut ledPin){
-    ledPin = 0;
+    ledPin = HIGH;
 }
 float IR::get_Rx(AnalogIn rx_pin_value){
   return rx_pin_value.read()*100.0f;
@@ -204,6 +204,16 @@ void IR::fire_and_get(void){
   bt.printf(" | s_l %3.3f%% | ",IR_readings[2][0] );
   bt.printf(" | s_r %3.3f%% | \r\n",IR_readings[2][1] );
   
+
+  printf(" | f_l %3.3f%% | ",IR_readings[0][0] );
+  printf(" | f_r %3.3f%% | ",IR_readings[0][1] );
+  printf(" | d_l %3.3f%% | ",IR_readings[1][0] );
+  printf(" | d_r %3.3f%% | ",IR_readings[1][1] );
+  printf(" | s_l %3.3f%% | ",IR_readings[2][0] );
+  printf(" | s_r %3.3f%% | \r\n",IR_readings[2][1] );
+  
+
+
   //  
   //Serial.print("  front left  ");
   //Serial.print(analogRead(A0));
