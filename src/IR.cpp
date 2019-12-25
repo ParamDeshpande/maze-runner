@@ -194,16 +194,21 @@ void IR::fire_and_get(void){
   #endif
   //map_IR();
   #ifdef DEBUG
-  powerDOWN_Tx(front_l_tx);
-  powerDOWN_Tx(front_r_tx);
-  powerDOWN_Tx(diag_l_tx);
-  powerDOWN_Tx(diag_r_tx);    
-  powerDOWN_Tx(side_l_tx);   
-  powerDOWN_Tx(side_r_tx);    
+  //powerDOWN_Tx(front_l_tx);
+  //powerDOWN_Tx(front_r_tx);
+  //powerDOWN_Tx(diag_l_tx);
+  //powerDOWN_Tx(diag_r_tx);    
+  //powerDOWN_Tx(side_l_tx);   
+  //powerDOWN_Tx(side_r_tx);    
 
-  powerUP_Tx(side_r_tx);
-  //diag_right_IR  =  get_Rx(diag_r_rx);
-  side_right_IR =  get_Rx(side_r_rx);
+  powerUP_Tx(front_l_tx);
+  powerUP_Tx(front_r_tx);
+  powerUP_Tx(diag_l_tx);
+  powerUP_Tx(diag_r_tx);    
+  powerUP_Tx(side_l_tx);   
+  powerUP_Tx(side_r_tx);    
+
+
   #endif
 }
 

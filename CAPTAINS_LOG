@@ -195,3 +195,15 @@ Need to limit to -180 to 180 // To be integrated with path planning Major issue.
 7.20 PM 
 done with good IMU calib and encoder calib for one revolution.
 PS 870 counts = 1 revolution/rotation. of motor.
+
+
+******IMPortant************
+Other Facts and calib stats 
+1 deg bot yaw =  diff of 14.29 counts.
+1 cm of wheel dist = 50.74 enc counts.
+
+
+For reference 
+****WHEEL 1DEGREEE*** 2.41counts
+****WHEEL 360DEGREEE*** 870counts or one revolution.
+

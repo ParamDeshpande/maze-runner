@@ -86,10 +86,11 @@ int main(void) {
       last_time = t_global.read_us();
       
     #ifdef DEBUG
-    refresh_imu(); //takes 100ms irrespective
-    feed_enc();
-  //  wait(0.5);
-    #endif // DEBUG
+    //refresh_imu(); //takes 100ms irrespective
+    //feed_enc();
+    IR_module.fire_and_get();
+    //wait(0.5);
+    #endif // DEBUG0
     
     now = t_global.read_us();
     t_global.stop();
