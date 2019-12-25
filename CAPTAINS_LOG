@@ -161,3 +161,37 @@ Starting with finishing all the functions
 24/12/19 
 back to IRs they had low power soldered 6pnp transistors for higher power 
 Testing today for performance
+day wasted ...
+YESTERDAY and today literally, way too ugly to debug things
+
+
+25/12/19 
+12.14 AM
+Switching back to supplying IRs from the microcontroller only let better have 25mA power than no power ...
+8 days to go.
+
+WOULD I BE ABLE TO COMPLETE THIS ?
+LETS BE HOPEFUL ...
+
+9.09 AM 
+Merry Xmas , not so merry 
+debugging one pnp 
+
+Moved on with IMU takes  -373.6619743981135 
+Does take 50MS 
+URGENT NEED FOR TTH architecture. 
+SED.
+Nop 
+its sort spooky , like spooky effect of electrons.
+When measuring the val via debuggers the val changes continiously and randomly but when printing it normally the val is constant.
+IDK IT TOOK 1MS to process the calc inside it, assuming just go with it.
+
+6.25 PM 
+Calibrated IMU ....Finally still don't know the runtime of the function. Coz of the spooky effct or maybe an interrupt is there maybe ... 
+Dont know ...
+
+Need to limit to -180 to 180 // To be integrated with path planning Major issue.
+
+7.20 PM 
+done with good IMU calib and encoder calib for one revolution.
+PS 870 counts = 1 revolution/rotation. of motor.

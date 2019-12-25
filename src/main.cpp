@@ -77,32 +77,31 @@ int main(void) {
   /////*MAIN SETUP ENDS HERE*
   #ifdef DEBUG
   encoder_init();
+  imu_setup();
   #endif // DEBUG     
 
   while(1) { 
     ///*LOOP CODE BEGINS HERE*
       t_global.start();
-      last_time = t_global.read_ms();
+      last_time = t_global.read_us();
       
     #ifdef DEBUG
-    l_forward(5);
-    r_backward(5);
+    refresh_imu(); //takes 100ms irrespective
     feed_enc();
+  //  wait(0.5);
     #endif // DEBUG
     
     now = t_global.read_us();
     t_global.stop();
-    delT = now - last_time;
-
+    delT = now - last_time; //usec
+  //printf("Time elapsed is %lf \n", delT/1000000);
     ///*LOOP CODE ENDS HERE*
   }
   return 0;
 } 
 
 /*
- //IR_module.fire_and_get();
-    //IR_module.display_IR();
-    
+ // 
    // bt.printf(" | f_l %3.3f%% | ",front_left_IR );
     //buzzer_off();   
   

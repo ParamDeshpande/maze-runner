@@ -165,12 +165,12 @@ void feed_enc(void) {
        check_overflow_tim2();
 
         #ifdef DEBUG_VIA_PRINTF
-        printf("Left count = %i ",  EncoderPosition_TIM1); // Position of Left Encoder
-        printf("Right count = %i ", EncoderPosition_TIM2); // Position of Right Encoder
-        printf("timer1 buffer value %i ", tim1_buffer[0] );
-        printf("timer1 offet value %i ", tim1_offset );
+        bt.printf("Left ENCA %lli ", L_enc_position );
+        bt.printf("Rifht ENCA %lli \n\r",R_enc_position );
         printf("Left ENCA %lli ", L_enc_position );
         printf("Rifht ENCA %lli \n\r",R_enc_position );
+        
+        
         #endif  
 
 }

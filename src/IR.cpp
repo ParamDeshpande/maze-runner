@@ -8,6 +8,8 @@ Team: MicroMau5 - Tristan Paine, Kevin Jung, Alexander Hadik
 #include "mbed.h"
 #include "../include/IR.h"
 
+#define DEBUG
+
 //*
 
 unsigned long last_time = 0;
@@ -152,65 +154,77 @@ void IR::map_IR(void){
 
 
 void IR::fire_and_get(void){
-
+  #ifndef DEBUG //RUN NORMALLY
   //at t=0
   powerUP_Tx(front_l_tx);
   wait_us(60);
-  IR_readings[0][0] = get_Rx(front_l_rx);
+  front_left_IR = get_Rx(front_l_rx);
   powerDOWN_Tx(front_l_tx); 
   wait_us(80);
 
   powerUP_Tx(front_r_tx);
   wait_us(60);
-  IR_readings[0][1] = get_Rx(front_r_rx);
+  front_right_IR = get_Rx(front_r_rx);
   powerDOWN_Tx(front_r_tx);
   wait_us(80);
 
   powerUP_Tx(diag_l_tx);
   wait_us(60);
-  IR_readings[1][0] =  get_Rx(diag_l_rx);
+  diag_left_IR =  get_Rx(diag_l_rx);
   powerDOWN_Tx(diag_l_tx);    
   wait_us(80);
 
   powerUP_Tx(diag_r_tx);
   wait_us(60);
-  IR_readings[1][1] =  get_Rx(diag_r_rx);
+  diag_right_IR  =  get_Rx(diag_r_rx);
   powerDOWN_Tx(diag_r_tx);
   wait_us(80);
 
   powerUP_Tx(side_l_tx);
   wait_us(60);
-  IR_readings[2][0] =  get_Rx(side_l_rx);
+  side_left_IR =  get_Rx(side_l_rx);
   powerDOWN_Tx(side_l_tx);    
   wait_us(80);
 
   powerUP_Tx(side_r_tx);
   wait_us(60);
-  IR_readings[2][1] =  get_Rx(side_r_rx);
+  side_right_IR =  get_Rx(side_r_rx);
   powerDOWN_Tx(side_r_tx);    
   wait_us(80);
+  #endif
+  //map_IR();
+  #ifdef DEBUG
+  powerDOWN_Tx(front_l_tx);
+  powerDOWN_Tx(front_r_tx);
+  powerDOWN_Tx(diag_l_tx);
+  powerDOWN_Tx(diag_r_tx);    
+  powerDOWN_Tx(side_l_tx);   
+  powerDOWN_Tx(side_r_tx);    
 
-  map_IR();
+  powerUP_Tx(side_r_tx);
+  //diag_right_IR  =  get_Rx(diag_r_rx);
+  side_right_IR =  get_Rx(side_r_rx);
+  #endif
 }
 
 
 
   void IR::display_IR(void){
   
-  bt.printf(" | f_l %3.3f%% | ",IR_readings[0][0] );
-  bt.printf(" | f_r %3.3f%% | ",IR_readings[0][1] );
-  bt.printf(" | d_l %3.3f%% | ",IR_readings[1][0] );
-  bt.printf(" | d_r %3.3f%% | ",IR_readings[1][1] );
-  bt.printf(" | s_l %3.3f%% | ",IR_readings[2][0] );
-  bt.printf(" | s_r %3.3f%% | \r\n",IR_readings[2][1] );
+  //bt.printf(" | f_l %3.3f%% | ",IR_readings[0][0] );
+  //bt.printf(" | f_r %3.3f%% | ",IR_readings[0][1] );
+  //bt.printf(" | d_l %3.3f%% | ",IR_readings[1][0] );
+  //bt.printf(" | d_r %3.3f%% | ",IR_readings[1][1] );
+  //bt.printf(" | s_l %3.3f%% | ",IR_readings[2][0] );
+  //bt.printf(" | s_r %3.3f%% | \r\n",IR_readings[2][1] );
   
 
-  printf(" | f_l %3.3f%% | ",IR_readings[0][0] );
-  printf(" | f_r %3.3f%% | ",IR_readings[0][1] );
-  printf(" | d_l %3.3f%% | ",IR_readings[1][0] );
-  printf(" | d_r %3.3f%% | ",IR_readings[1][1] );
-  printf(" | s_l %3.3f%% | ",IR_readings[2][0] );
-  printf(" | s_r %3.3f%% | \r\n",IR_readings[2][1] );
+  printf(" | f_l %3.3f%% | ", front_left_IR  );
+  printf(" | f_r %3.3f%% | ", front_right_IR  );
+  printf(" | d_l %3.3f%% | ", diag_left_IR  );
+  printf(" | d_r %3.3f%% | ", diag_right_IR  );
+  printf(" | s_l %3.3f%% | ", side_left_IR  );
+  printf(" | s_r %3.3f%% | \n\r", side_right_IR  );
   
 
 

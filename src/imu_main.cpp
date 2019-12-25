@@ -19,48 +19,29 @@
  SDA ----------------------- A4
  SCL ----------------------- A5
  GND ---------------------- GND
- 
- Note: The MPU9250 is an I2C sensor and uses the Arduino Wire library. 
- Because the sensor is not 5V tolerant, we are using a 3.3 V 8 MHz Pro Mini or a 3.3 V Teensy 3.1.
- We have disabled the internal pull-ups used by the Wire library in the Wire.h/twi.c utility file.
- We are also using the 400 kHz fast I2C mode by setting the TWI_FREQ  to 400000L /twi.h utility file.
  */
- 
-//#include "ST_F401_84MHZ.h" 
-//F401_init84 myinit(0);
 #include "commons.h"
 #include "../lib/MPU9250.h"
 #include "imu.h"
 
+#define angleSumFiftyK -373.6619743981135 
+#define calib_factor 2.65
 
-#define angleSumFiftyK 0   //14.671313 //DO edit after analysis 50K samples.
+//Global vars
+double corrected_yaw = -1000;
 
 
-// int imu_count = 0;
-//#include "N5110.h"
-
-// Using NOKIA 5110 monochrome 84 x 48 pixel display
-// pin 9 - Serial clock out (SCLK)
-// pin 8 - Serial data out (DIN)
-// pin 7 - Data/Command select (D/C)
-// pin 5 - LCD chip select (CS)
-// pin 6 - LCD reset (RST)
-//Adafruit_PCD8544 display = Adafruit_PCD8544(9, 8, 7, 5, 6);
-
-//imu_setup()
-//display_imu()
-//refresh_imu()
-
+// PRIVATE VARS
 static float sum = 0;
 static uint32_t sumCount = 0;
 static char buffer[14];
+static int Countt = 0;
+double yawGyro_rads =0;
+static int8_t wait_10_yaw_vals = 10;
+static double yaw_offset = -1.0;
+MPU9250 mpu9250;
 
-
-   MPU9250 mpu9250;
-   
-   Timer t;
-  
-//int imu_count = 0;
+Timer t;
 
 void imu_setup(void){
   
@@ -120,17 +101,12 @@ void imu_setup(void){
     }
 
 }   
-int Countt = 0;
-double yawGyro_rads =0;
 
 void refresh_imu(void)
 {
     mpu9250.getAres(); // Get accelerometer sensitivity
     mpu9250.getGres(); // Get gyro sensitivity
     mpu9250.getMres(); // Get magnetometer sensitivity
-    //bt.printf("Accelerometer sensitivity is %f LSB/g \n\r", 1.0f/aRes);
-    //bt.printf("Gyroscope sensitivity is %f LSB/deg/s \n\r", 1.0f/gRes);
-    //bt.printf("Magnetometer sensitivity is %f LSB/G \n\r", 1.0f/mRes);
     magbias[0] = +470.;  // User environmental x-axis correction in milliGauss, should be automatically calculated
     magbias[1] = +120.;  // User environmental x-axis correction in milliGauss
     magbias[2] = +125.;  // User environmental x-axis correction in milliGauss
@@ -167,74 +143,38 @@ void refresh_imu(void)
     
     sum += deltat;
     sumCount++;
-    
-    //    if(lastUpdate - firstUpdate > 10000000.0f) {
-    //     beta = 0.04;  // decrease filter gain after stabilized
-    //     zeta = 0.015; // increasey bias drift gain after stabilized
-    //   }
-    
     // Pass gyro rate as rad/s
     //  mpu9250.MadgwickQuaternionUpdate(ax, ay, az, gx*PI/180.0f, gy*PI/180.0f, gz*PI/180.0f,  my,  mx, mz);
     mpu9250.MahonyQuaternionUpdate(ax, ay, az, gx*PI/180.0f, gy*PI/180.0f, gz*PI/180.0f, my, mx, mz);
 
     // Serial print and/or display at 0.5 s rate independent of data rates
     delt_t = t.read_ms() - imu_count;
-    if (delt_t > 500) { // update LCD once per half-second independent of read rate
-
-    //bt.printf("ax = %f", 1000*ax); 
-    //bt.printf(" ay = %f", 1000*ay); 
-    //bt.printf(" az = %f  mg\n\r", 1000*az); 
-
-    //bt.printf("gx = %f", gx); 
-    //bt.printf(" gy = %f", gy); 
-    //bt.printf(" gz = %f  deg/s\n\r", gz); 
-    
-    //bt.printf("gx = %f", mx); 
-    //bt.printf(" gy = %f", my); 
-    //bt.printf(" gz = %f  mG\n\r", mz); 
-    
-    tempCount = mpu9250.readTempData();  // Read the adc values
-    temperature = ((float) tempCount) / 333.87f + 21.0f; // Temperature in degrees Centigrade
-    //bt.printf(" temperature = %f  C\n\r", temperature); 
-    
-    //bt.printf("q0 = %f\n\r", q[0]);
-    //bt.printf("q1 = %f\n\r", q[1]);
-    //bt.printf("q2 = %f\n\r", q[2]);
-    //bt.printf("q3 = %f\n\r", q[3]);      
-    
-/*    lcd.clear();
-    lcd.printString("MPU9250", 0, 0);
-    lcd.printString("x   y   z", 0, 1);
-    sprintf(buffer, "%d %d %d mg", (int)(1000.0f*ax), (int)(1000.0f*ay), (int)(1000.0f*az));
-    lcd.printString(buffer, 0, 2);
-    sprintf(buffer, "%d %d %d deg/s", (int)gx, (int)gy, (int)gz);
-    lcd.printString(buffer, 0, 3);
-    sprintf(buffer, "%d %d %d mG", (int)mx, (int)my, (int)mz);
-    lcd.printString(buffer, 0, 4); 
- */  
-  // Define output variables from updated quaternion---these are Tait-Bryan angles, commonly used in aircraft orientation.
-  // In this coordinate system, the positive z-axis is down toward Earth. 
-  // Yaw is the angle between Sensor x-axis and Earth magnetic North (or true North if corrected for local declination, looking down on the sensor positive yaw is counterclockwise.
-  // Pitch is angle between sensor x-axis and Earth ground plane, toward the Earth is positive, up toward the sky is negative.
-  // Roll is angle between sensor y-axis and Earth ground plane, y-axis up is positive roll.
-  // These arise from the definition of the homogeneous rotation matrix constructed from quaternions.
-  // Tait-Bryan angles as well as Euler angles are non-commutative; that is, the get the correct orientation the rotations must be
-  // applied in the correct order which for this configuration is yaw, pitch, and then roll.
-  // For more see http://en.wikipedia.org/wiki/Conversion_between_quaternions_and_Euler_angles which has additional links.
     yaw   = atan2(2.0f * (q[1] * q[2] + q[0] * q[3]), q[0] * q[0] + q[1] * q[1] - q[2] * q[2] - q[3] * q[3]);   
- 
+
     yawGyro_rads +=  (gz*(50000) - angleSumFiftyK)/50000;
     pitch = -asin(2.0f * (q[1] * q[3] - q[0] * q[2]));
     roll  = atan2(2.0f * (q[0] * q[1] + q[2] * q[3]), q[0] * q[0] - q[1] * q[1] - q[2] * q[2] + q[3] * q[3]);
     pitch *= 180.0f / PI;
-    //yaw   *= 180.0f / PI; 
+    yaw   *= 180.0f / PI; 
+    yaw *= calib_factor;
+    //yaw -= yaw_offset ;
+    if(wait_10_yaw_vals > 0){
+      wait_10_yaw_vals--;
+    }
+    if(wait_10_yaw_vals == 0){
+      yaw_offset = yaw;
+      wait_10_yaw_vals--;
+      corrected_yaw = 00;
+    }
+    corrected_yaw =  -(yaw - yaw_offset) ; 
     //yaw   -= 13.8f; // Declination at Danville, California is 13 degrees 48 minutes and 47 seconds on 2014-04-04 (magnetic degs)
     // MUMBAI IT IS 0deg 3mins    
     roll  *= 180.0f / PI;
 
-    //countt
-    bt.printf(" i = %d , Yaw: %f , yaw GYRO:%f  \n\r",Countt, yaw, yawGyro_rads);
-    pc.printf(" i = %d , Yaw: %f , yaw GYRO:%f  \n\r",Countt, yaw, yawGyro_rads);
+    //countt 
+
+    //bt.printf(" i = %d , corYaw: %f , yaw :%f  \n\r",Countt, corrected_yaw, yaw);
+    printf(" i = %d , cor Yaw: %f , yaw :%f  ",Countt, corrected_yaw, yaw);
     
     //bt.printf("average rate = %f\n\r", (float) sumCount/sum);
 //    sprintf(buffer, "YPR: %f %f %f", yaw, pitch, roll);
@@ -252,8 +192,7 @@ void refresh_imu(void)
         lastUpdate = t.read_us();
     }
     sum = 0;
-    sumCount = 0; 
-  }
+    sumCount = 0;
 
  
 }
