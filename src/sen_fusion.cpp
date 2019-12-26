@@ -1,4 +1,14 @@
-#define DEBUG_VIA_PRINTF 
+
+
+#include "../include/commons.h"
+#include "../include/sen_fusion.h"
+#include "../include/encoder.h"
+#include "../include/imu.h"
+
+
+
+#define DEBUG
+
 
 //Kalman Parameters
 #define calc_var_x 1000UL
@@ -18,27 +28,54 @@
 #define pivot_w 0UL
 #define pivot_turn_Speed 0UL
 
+//private functions 
+static void map_yaw_range(void);
 
-#include "../include/commons.h"
-#include "../include/sen_fusion.h"
-#include "../include/encoder.h"
-#include "../include/imu.h"
 
 //PRIVATE VARS
 static double prev_x = 0;
 static double prev_yaw = 0;
+static const float alpha_yaw_comp = 1.0; // IE 0.6 for encoders 0.4 for IMU
+
+
+//MAKES SURE MY ANGLES ARE RESTRICTED from -65 to 65 degs.
+static void map_yaw_range(void){
+     if(corrected_yaw >65){
+         corrected_yaw -= 90;
+     }
+     else if (corrected_yaw >156){
+         corrected_yaw -= 180;
+     }
+     else if (corrected_yaw < -65){
+         corrected_yaw += 90;
+     }
+     else if (corrected_yaw < -156){
+         corrected_yaw += 180;
+     }
+}
+
 
 void calc_state(void){
+    
 feed_enc();
-//current_x = ((EncoderPosition_TIM1 + EncoderPosition_TIM2)/(2.0*61.4444*100.0)); //DIST IN METERS (61.444 counts = 1cm)
-current_vel = (current_x - prev_x)/delT;
-current_yaw = yawGyro_rads;
-current_w = (current_yaw - prev_yaw)/delT;
-#ifdef DEBUG_VIA_PRINTF
-pc.printf("Current time diff is %f \n\r", delT);
-pc.printf("My current vel is %f \n\r", current_vel  );
-pc.printf("My current w is %f \n\r",   current_yaw  );
+current_x = ((L_enc_position + R_enc_position)/(2.0*50.74)); //DIST IN cm (50.74 counts = 1cm)
+current_vel = (current_x - prev_x)/(delT*1e6); //IN cm/sec
+
+refresh_imu();
+map_yaw_range();
+double enc_diff = L_enc_position - R_enc_position;
+double yaw_encoder = enc_diff/14.269;
+current_yaw = alpha_yaw_comp*yaw_encoder + (1- alpha_yaw_comp)*corrected_yaw ;
+current_w = (current_yaw - prev_yaw)/(delT*1e6);  //degs/sec
+
+#ifdef DEBUG
+//pc.printf("Current time diff is %f ", delT);
+pc.printf("My current position is %f ", current_x  );
+pc.printf("My current vel is %f ", current_vel  );
+pc.printf("My current yaw is %f ",   current_yaw  );
+pc.printf("My current w is %f \n\r",   current_w  );
 #endif // DEBUG
+
 prev_x = current_x;
 prev_yaw = current_yaw;
 }

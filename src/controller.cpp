@@ -7,6 +7,13 @@
 #include "../include/actuator.h"
 
 
+#define x_Kp 10 
+#define x_Ki 1e5 
+#define x_Kd 0.0 
+#define w_Kp 0.0 
+#define w_Ki 0.0 
+#define w_Kd 0.0 
+
 //global variables
 double current_x = 0;
 double current_vel = 0;
@@ -15,13 +22,6 @@ double current_yaw = 0 ;
 double current_w = 0 ;
 
 //PRIVATE VARS
-static float x_Kp = 10;
-static float x_Ki = 1e5;
-static float x_Kd = 0;
-static float w_Kp ;
-static float w_Ki ;
-static float w_Kd ;
-
 static double vel_pwm = 0;
 static double w_pwm = 0;
  
@@ -31,17 +31,15 @@ static double w_Error = 0;
 static double x_Error = 0;
 static double ang_Error = 0;
 
-#ifndef DEBUG_CONTROLLER 
 static double leftMotorPWM = 0;
 static double rightMotorPWM = 0;
-#endif // DEBUG_CONTROLLER
 
 
 
 void main_controller(double desired_vel, double desired_w ){
 
     
-    #ifdef DEBUG_VIA_PRINTF
+    #ifdef DEBUG
     pc.printf("delT is %f\n\r", delT);
     #endif // DEBUG
     //current_vel = x_vel;
@@ -64,7 +62,7 @@ void main_controller(double desired_vel, double desired_w ){
     vel_pwm = x_Kp*vel_Error +  x_Ki*x_Error +  x_Kd*vel_Error/delT  ;
     w_pwm = w_Kp*w_Error + w_Ki*ang_Error + w_Kd*ang_Error/delT ;
     
-    #ifndef DEBUG_CONTROLLER
+    
     leftMotorPWM = vel_pwm - w_pwm;
     rightMotorPWM = vel_pwm + w_pwm;
     if(leftMotorPWM >0)
@@ -76,10 +74,6 @@ void main_controller(double desired_vel, double desired_w ){
       r_forward(rightMotorPWM);
     else  //If negative
       r_backward(-rightMotorPWM);
-
-    #endif // DEBUG_CONTROLLER
-
-   
 }
 
 void kill_motion(void){

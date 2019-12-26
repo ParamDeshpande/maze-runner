@@ -60,32 +60,53 @@ void imu_setup(void){
   
   if (whoami == 0x71) // WHO_AM_I should always be 0x68
   {  
+    
+    #ifdef DEBUG
     bt.printf("MPU9250 WHO_AM_I is 0x%x\n\r", whoami);
     bt.printf("MPU9250 is online...\n\r");
-    wait(1);
     
+    #endif // DEBUG
+    
+    wait(1);
     mpu9250.resetMPU9250(); // Reset registers to default in preparation for device calibration
     mpu9250.MPU9250SelfTest(SelfTest); // Start by performing self test and reporting values
+    
+    #ifdef DEBUG
     bt.printf("x-axis self test: acceleration trim within : %f % of factory value\n\r", SelfTest[0]);  
     bt.printf("y-axis self test: acceleration trim within : %f % of factory value\n\r", SelfTest[1]);  
     bt.printf("z-axis self test: acceleration trim within : %f % of factory value\n\r", SelfTest[2]);  
     bt.printf("x-axis self test: gyration trim within : %f % of factory value\n\r", SelfTest[3]);  
     bt.printf("y-axis self test: gyration trim within : %f % of factory value\n\r", SelfTest[4]);  
     bt.printf("z-axis self test: gyration trim within : %f % of factory value\n\r", SelfTest[5]);  
+    #endif // DEBUG
     mpu9250.calibrateMPU9250(gyroBias, accelBias); // Calibrate gyro and accelerometers, load biases in bias registers  
+    
+    #ifdef DEBUG
     bt.printf("x gyro bias = %f\n\r", gyroBias[0]);
     bt.printf("y gyro bias = %f\n\r", gyroBias[1]);
     bt.printf("z gyro bias = %f\n\r", gyroBias[2]);
     bt.printf("x accel bias = %f\n\r", accelBias[0]);
     bt.printf("y accel bias = %f\n\r", accelBias[1]);
     bt.printf("z accel bias = %f\n\r", accelBias[2]);
+    
+    #endif // DEBUG
+    
+    
     wait(2);
     mpu9250.initMPU9250(); 
+
+    #ifdef DEBUG
     bt.printf("MPU9250 initialized for active data mode....\n\r"); // Initialize device for active mode read of acclerometer, gyroscope, and temperature
+    #endif // DEBUG
+    
     mpu9250.initAK8963(magCalibration);
+    
+    #ifdef DEBUG
     bt.printf("AK8963 initialized for active data mode....\n\r"); // Initialize device for active mode read of magnetometer
     bt.printf("Accelerometer full-scale range = %f  g\n\r", 2.0f*(float)(1<<Ascale));
     bt.printf("Gyroscope full-scale range = %f  deg/s\n\r", 250.0f*(float)(1<<Gscale));
+    #endif // DEBUG
+    
     if(Mscale == 0) bt.printf("Magnetometer resolution = 14  bits\n\r");
     if(Mscale == 1) bt.printf("Magnetometer resolution = 16  bits\n\r");
     if(Mmode == 2) bt.printf("Magnetometer ODR = 8 Hz\n\r");
@@ -94,10 +115,11 @@ void imu_setup(void){
    }
    else
    {
+    #ifdef DEBUG
     bt.printf("Could not connect to MPU9250: \n\r");
     bt.printf("%#x \n",  whoami);
- 
-    while(1) ; // Loop forever if communication doesn't happen
+    #endif // DEBUG
+
     }
 
 }   
@@ -172,15 +194,10 @@ void refresh_imu(void)
     roll  *= 180.0f / PI;
 
     //countt 
-
-    //bt.printf(" i = %d , corYaw: %f , yaw :%f  \n\r",Countt, corrected_yaw, yaw);
+    #ifdef DEBUG
+    bt.printf(" i = %d , corYaw: %f , yaw :%f  \n\r",Countt, corrected_yaw, yaw);
     printf(" i = %d , cor Yaw: %f , yaw :%f  ",Countt, corrected_yaw, yaw);
-    
-    //bt.printf("average rate = %f\n\r", (float) sumCount/sum);
-//    sprintf(buffer, "YPR: %f %f %f", yaw, pitch, roll);
-//    lcd.printString(buffer, 0, 4);
-//    sprintf(buffer, "rate = %f", (float) sumCount/sum);
-//    lcd.printString(buffer, 0, 5);
+    #endif // DEBUG
     
     myled= !myled;
     imu_count = t.read_ms(); 
