@@ -207,3 +207,29 @@ For reference
 ****WHEEL 1DEGREEE*** 2.41counts
 ****WHEEL 360DEGREEE*** 870counts or one revolution.
 
+26/12/19 
+11.32AM 
+IRs super forked up now, since transistors were not working I **cut them OFF**
+Now IR led module separated from the board.
+All IRS ARE WORKING at 3.3v except SR IR Led.
+that led works at 5v, need to change resistor vals.
+
+With having no patience I am moving forward with main_controller calibration and testing.
+
+
+FUNNY THINGY I HADN'T called THAT FUNCTION>.>>>. 
+USELESSLY CUT THE transistor wires.
+
+27/12/19
+4.46AM
+tried everything ... 
+Cleaned the old iron resoldered the entire transistor and cutted wires. cleaned the board a bit, BUT STILL NO LUCK 
+Finally switched back to normal,  thingsarent working quite as expected.
+except sl all good
+
+1.27PM 
+there Fixed it ...
+
+7.39PM
+track ready.
+Now need to test.

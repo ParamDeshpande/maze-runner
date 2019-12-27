@@ -3,7 +3,7 @@
 #include "../include/encoder.h"
 
 
-//#define DEBUG_VIA_PRINTF
+#define DEBUG
 
 //GLOBAL VARS
 int64_t L_enc_position = 0;
@@ -167,8 +167,8 @@ void feed_enc(void) {
         #ifdef DEBUG
         bt.printf("Left ENCA %lli ", L_enc_position );
         bt.printf("Rifht ENCA %lli \n\r",R_enc_position );
-        printf("Left ENCA %lli ", L_enc_position );
-        printf("Rifht ENCA %lli \n\r",R_enc_position );
+        pc.printf("Left ENCA %lli ", L_enc_position );
+        pc.printf("Rifht ENCA %lli ",R_enc_position );
         
         
         #endif  

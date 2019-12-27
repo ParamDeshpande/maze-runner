@@ -1,8 +1,3 @@
-/*
-IR.cpp - Library for setting pin modes, creating pin array, and querying IR sensors from set pins
-Author: Alexander Hadik
-Team: MicroMau5 - Tristan Paine, Kevin Jung, Alexander Hadik
-*/
 
 #include "../include/commons.h"
 #include "mbed.h"
@@ -124,12 +119,12 @@ void IR::reset_params(void){
 //int IR_readings[3][2];
 
 void IR::powerUP_Tx(DigitalOut ledPin){
-    ledPin = LOW;
+    ledPin = HIGH;
     //digitalWrite(ledPin, HIGH);
 }
 // SINCE PNP transistors are used
 void IR::powerDOWN_Tx(DigitalOut ledPin){
-    ledPin = HIGH;
+    ledPin = LOW;
 }
 float IR::get_Rx(AnalogIn rx_pin_value){
   return rx_pin_value.read()*100.0f;
@@ -198,14 +193,14 @@ void IR::fire_and_get(void){
   powerDOWN_Tx(front_r_tx);
   powerDOWN_Tx(diag_l_tx);
   powerDOWN_Tx(diag_r_tx);    
-  powerDOWN_Tx(side_l_tx);   
+  //powerDOWN_Tx(side_l_tx);   
   powerDOWN_Tx(side_r_tx);    
 
   //powerUP_Tx(front_l_tx);
   //powerUP_Tx(front_r_tx);
   //powerUP_Tx(diag_l_tx);
   //powerUP_Tx(diag_r_tx);    
-  //powerUP_Tx(side_l_tx);   
+  powerUP_Tx(side_l_tx);   
   //powerUP_Tx(side_r_tx);    
 
 
