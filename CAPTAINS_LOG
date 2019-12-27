@@ -233,3 +233,10 @@ there Fixed it ...
 7.39PM
 track ready.
 Now need to test.
+
+8.48PM
+FIXING BACK TO the ol' edfault code it works fine adding some tunings **WITHOUT** modifying anything old.
+
+Writing STARTUP SELF CALIB SEQUENCE for IMU COZ offset changes everytime for every run according to refresh rate.
+2 things need to be done.
+Self calibration and main controller.

@@ -35,7 +35,7 @@ static void map_yaw_range(void);
 //PRIVATE VARS
 static double prev_x = 0;
 static double prev_yaw = 0;
-static const float alpha_yaw_comp = 1.0; // IE 0.6 for encoders 0.4 for IMU
+static const float alpha_yaw_comp = 0.0; // IE 0.6 for encoders 0.4 for IMU
 
 
 //MAKES SURE MY ANGLES ARE RESTRICTED from -65 to 65 degs.
@@ -58,22 +58,22 @@ static void map_yaw_range(void){
 void calc_state(void){
     
 feed_enc();
-current_x = ((L_enc_position + R_enc_position)/(2.0*50.74)); //DIST IN cm (50.74 counts = 1cm)
-current_vel = (current_x - prev_x)/(delT*1e6); //IN cm/sec
+current_x = ((L_enc_position + R_enc_position)/(2.0*ONE_CM_WHEEL_ENC_COUNT)); //DIST IN cm
+current_vel = (current_x - prev_x)/(delT); //IN cm/sec
 
 refresh_imu();
-map_yaw_range();
+//map_yaw_range();
 double enc_diff = L_enc_position - R_enc_position;
-double yaw_encoder = enc_diff/14.269;
+double yaw_encoder = enc_diff/ONE_DEG_YAW_ENC_COUNT;
 current_yaw = alpha_yaw_comp*yaw_encoder + (1- alpha_yaw_comp)*corrected_yaw ;
-current_w = (current_yaw - prev_yaw)/(delT*1e6);  //degs/sec
+current_w = (current_yaw - prev_yaw)/(delT);  //degs/sec
 
 #ifdef DEBUG
-//pc.printf("Current time diff is %f ", delT);
-pc.printf("My current position is %f ", current_x  );
-pc.printf("My current vel is %f ", current_vel  );
-pc.printf("My current yaw is %f ",   current_yaw  );
-pc.printf("My current w is %f \n\r",   current_w  );
+pc.printf("Current time diff is %lf ", delT);
+pc.printf("My current position is %lf ", current_x  );
+pc.printf("My current vel is %lf ", current_vel  );
+pc.printf("My current yaw is %lf \n\r",   current_yaw  );
+//pc.printf("My current w is %lf \n\r",   current_w  );
 #endif // DEBUG
 
 prev_x = current_x;

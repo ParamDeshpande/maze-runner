@@ -1,6 +1,10 @@
 #ifndef ENCODER_H
 #define ENCODER_H
 
+//GLOBAL DEFS 
+#define ONE_DEG_YAW_ENC_COUNT 14.269
+#define ONE_CM_WHEEL_ENC_COUNT 50.74
+
 void feed_enc(void);
 void encoder_init(void);
 
