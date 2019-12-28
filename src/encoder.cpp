@@ -168,9 +168,7 @@ void feed_enc(void) {
         bt.printf("Left ENCA %lli ", L_enc_position );
         bt.printf("Rifht ENCA %lli \n\r",R_enc_position );
         pc.printf("Left ENCA %lli ", L_enc_position );
-        pc.printf("Rifht ENCA %lli ",R_enc_position );
-        
-        
+        pc.printf("Rifht ENCA %lli \n\r",R_enc_position );
         #endif  
 
 }
