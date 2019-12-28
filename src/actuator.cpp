@@ -21,8 +21,8 @@ short int input2;
     void r_backward(float percent_PWM){
     r_enable.period_ms(40.0f);     
     r_enable = percent_PWM/100.0f;
-    r_input1 = HIGH;
-    r_input2 = LOW;
+    r_input2 = HIGH;
+    r_input1 = LOW;
     }
 
     void r_forward(float percent_PWM){
