@@ -46,7 +46,10 @@
 //imu_setup()
 //display_imu()
 //refresh_imu()
-
+//GLOBAL VARS 
+double yaw_offset = 0;
+double imu_calib_factor = 0;
+double corrected_yaw = 0;
 static float sum = 0;
 static uint32_t sumCount = 0;
 static char buffer[14];
