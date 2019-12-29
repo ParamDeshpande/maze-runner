@@ -74,7 +74,11 @@ pc.printf("Current time diff is %lf ", delT);
 pc.printf("My current position is %lf ", current_x  );
 pc.printf("My current vel is %lf ", current_vel  );
 pc.printf("My current yaw is %lf \n\r",   current_yaw  );
-//pc.printf("My current w is %lf \n\r",   current_w  );
+pc.printf("My current w is %lf \n\r",   current_w  );
+
+bt.printf("My current vel is %lf ", current_vel  );
+bt.printf("My current w is %lf \n\r",   current_w  );
+
 #endif // DEBUG
 
 prev_x = current_x;

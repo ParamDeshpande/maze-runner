@@ -32,7 +32,7 @@
 #include "../lib/MPU9250.h"
 #include "imu.h"
 
-//#define DEBUG
+#define DEBUG
 // int imu_count = 0;
 //#include "N5110.h"
 

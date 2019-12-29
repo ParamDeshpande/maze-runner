@@ -5,7 +5,8 @@
 #include "encoder.h"
 #include "Utils.h"
 
-//#define DEBUG
+//do not remove this debug or modify pf statements they slow down to a consirable range.
+#define DEBUG
 
 #define Stable_VARIANCE_YAW 100.0
 #define STABLE_BUF_SIZE 200
@@ -62,7 +63,7 @@ void self_calib_IMU(void){
         bool turn_90degs = false;
         while (turn_90degs != true )
         {
-        //wait_ms(75);
+        wait_ms(100);
         feed_enc();
         refresh_imu();    
         //Turn the bot by +90degs.
@@ -98,7 +99,7 @@ void self_calib_IMU(void){
         bool turn_back_180degs = false;
         while (turn_back_180degs != true )
         {   
-        //wait_ms(75);
+        wait_ms(75);
         feed_enc();
         refresh_imu();
         if(L_enc_position > (-45*ONE_DEG_YAW_ENC_COUNT)){
@@ -147,7 +148,7 @@ void self_calib_IMU(void){
         bool turn_back_0degs = false;
         while (turn_back_0degs != true )
         {   
-        //    wait_ms(75);
+            wait_ms(75);
             feed_enc();
             refresh_imu();
             if(L_enc_position < (-5*ONE_DEG_YAW_ENC_COUNT)){
@@ -201,7 +202,8 @@ void self_calib_IMU(void){
         }
 
         
-        
+        l_forward(0);
+        r_backward(0);
     }
     else
     {
