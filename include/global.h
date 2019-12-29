@@ -15,8 +15,8 @@ extern Timer t_global ;
 #define HIGH 1
 #define LOW 0
 
-#define UP 1
-#define DOWN 0
+#define RAMP_UP 1
+#define RAMP_DOWN 0
 
 #define TRUE true
 #define FALSE false

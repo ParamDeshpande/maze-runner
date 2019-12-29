@@ -1,8 +1,8 @@
 
 #include "../include/Utils.h"
+#include "calibration.h"
 #include <string.h>
 #include "../include/commons.h"
-
 
 
 void ramp_UP_X( double & var, double x){
@@ -10,12 +10,34 @@ void ramp_UP_X( double & var, double x){
     ++var;
   }
 }
-
-void ramp_UP_X_RESET( double & var, double x){
-  if(var <= x){
-    ++var;
+//This function will specifically ramp l/r forward/backward vals to the desired val from current val.
+// More specifically 
+// 0 to max_turn and max_turn to 0.
+/*
+void ramp_LX( double &(x_val), void (*ramp_func)(float), bool ramp_dir){
+  
+  if((ramp_dir == RAMP_DOWN) AND (x_val != 0) ){
+  //RAMP DOWN
+   --x_val;
   }
+  else if((ramp_dir == RAMP_UP) AND (x_val != CALIB_MOTOR_SPEED)){
+    //It was zero and is now being added faster
+    ++x_val;
+  }
+  ramp_func(x_val);
+  //if()
 }
+*/
+void ramp_X(double &cur_L_vel, void (*L_func)(float), bool ramp_dir){
+  if((ramp_dir == RAMP_DOWN) AND (cur_L_vel != 0)){
+    --cur_L_vel;
+  }
+  else if((ramp_dir == RAMP_UP) AND (cur_L_vel != CALIB_MOTOR_SPEED)){
+    ++cur_L_vel;
+  }
+  L_func(cur_L_vel);
+}
+
 
 
 
@@ -76,7 +98,7 @@ void bt_nline(void){
   bt.printf(" \n ");
 }
 
-/*
+
 
 void wait_for_G_press(void){
 

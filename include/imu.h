@@ -5,9 +5,9 @@
 //Function prototypes
 void imu_setup(void) ;
 void refresh_imu(void) ;
+void get_relative_yaw(void) ;
 
-//Global vars
-
+//Global vars////
 extern double corrected_yaw;
 extern float yaw;
 extern double imu_calib_factor; 

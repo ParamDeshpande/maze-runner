@@ -40,6 +40,8 @@
 #include "actuator.h"
 #include "buzzer.h"
 #include "../include/sen_fusion.h"
+#include "calibration.h"
+
 #define DEBUG_VIA_PRINTF 
 
 
@@ -78,6 +80,7 @@ int main(void) {
   #ifdef DEBUG
   encoder_init();
   imu_setup();
+  self_calib_IMU();
   #endif // DEBUG     
 
   while(1) { 
@@ -86,12 +89,32 @@ int main(void) {
       last_time = t_global.read_us();
       
     #ifdef DEBUG
-    calc_state();
+    //l_forward(100);
+    //r_forward(100);
+    //IR_module.fire_and_get();
+    //calc_state();
+    //refresh_imu();
+      while((corrected_yaw < 5.0) AND (corrected_yaw > -5.0)){
+            get_relative_yaw();
+            l_backward(CALIB_MOTOR_SPEED);
+            r_forward(CALIB_MOTOR_SPEED);
+            if((corrected_yaw < 10) AND (corrected_yaw > -10)){
+                get_relative_yaw();
+
+            }
+        }
+    get_relative_yaw();
+    pc.printf("The yaw offset is %lf ,and muly fact is %lf and yaw is %lf ", yaw_offset, imu_calib_factor, corrected_yaw );
+    l_forward(0);
+    r_backward(0);
+        //feed_enc();
+    //pc.printf(" \n\r");
     #endif // DEBUG
     
     now = t_global.read_us();
     t_global.stop();
-    delT = now - last_time; //usec
+    delT = (now - last_time)/1000000.0; //sec
+    //wait_ms(50);
   //printf("Time elapsed is %lf \n", delT/1000000);
     ///*LOOP CODE ENDS HERE*
   }

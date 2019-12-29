@@ -257,4 +257,20 @@ S6 REPEAT
  TIP - COMPLETE,debug,commit,PUSH, small blocks of code say every 50 lines or so.
  
 
+So far completed yesterdays work. 
+Need to address the ramping of motors speed for smooth transistion.
+Software 
+Task1. RAMP UP/DOWM MOTORS.
+Task2. Fuse and check yaw correct or not.
+Task3. Main controller PID vals.
 
+hware 
+Task1. FIX SKID PAD POSITION.
+
+s1 doing the Hware task first.
+2.52 PM 
+Fixed
+
+3.36 PM 
+S1. Ramp up 
+still thinking ...

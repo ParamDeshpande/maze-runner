@@ -8,12 +8,20 @@
 #define DEBUG
 
 #define Stable_VARIANCE_YAW 100.0
-#define MOTOR_TURN_SPEED 10.0
-#define STABLE_BUF_SIZE 150
+#define STABLE_BUF_SIZE 200
+
+// GLobal VARS
+double CALIB_MOTOR_SPEED = 10.0;
+
 
 //PRIVATE FUNCTIONS 
 int variance(int [], int); 
+static double left_motor_speed = 0;
+static double right_motor_speed = 0;
 
+
+// PRIVATE FUNCTIONS 
+//static int variance(int [], int ) ;
 
 int variance(int a[], int n) 
 { 
@@ -54,21 +62,26 @@ void self_calib_IMU(void){
         bool turn_90degs = false;
         while (turn_90degs != true )
         {
-        feed_enc();    
+        //wait_ms(75);
+        feed_enc();
+        refresh_imu();    
         //Turn the bot by +90degs.
-        if(L_enc_position < 45 *ONE_DEG_YAW_ENC_COUNT){
-            l_forward(MOTOR_TURN_SPEED);
+        if(L_enc_position < 45*ONE_DEG_YAW_ENC_COUNT){
+            //ramp_LX(left_motor_speed,l_forward,RAMP_UP);
+            ramp_X(left_motor_speed,l_forward,RAMP_UP);
+
         }
+
         else if(L_enc_position > 45*ONE_DEG_YAW_ENC_COUNT)
         {
-          l_forward(0);
+          ramp_X(left_motor_speed,l_forward,RAMP_DOWN);
         }
         if((-R_enc_position) < (45*ONE_DEG_YAW_ENC_COUNT)){
-            r_backward(MOTOR_TURN_SPEED);   
+            ramp_X(right_motor_speed,r_backward,RAMP_UP);     
         }
         else if((-R_enc_position) > (45*ONE_DEG_YAW_ENC_COUNT))
         {
-            r_backward(0);
+            ramp_X(right_motor_speed,r_backward,RAMP_DOWN);
         }
         if ((L_enc_position >= 45*ONE_DEG_YAW_ENC_COUNT) && (R_enc_position <= (-45*ONE_DEG_YAW_ENC_COUNT)))
         {
@@ -77,29 +90,32 @@ void self_calib_IMU(void){
         }
         // Now it has turned 90 degs
         refresh_imu();
-        wait(0.5);
         imu_calib_factor = (90)/(yaw - yaw_offset);
-        pc.printf("The mult factor is %lf ", imu_calib_factor);
+        pc.printf("The mult factor is %lf bias is %lf , yaw is %lf", imu_calib_factor,yaw_offset , yaw);
     
         
         //Now turn it back to -180 degs
         bool turn_back_180degs = false;
         while (turn_back_180degs != true )
         {   
+        //wait_ms(75);
         feed_enc();
+        refresh_imu();
         if(L_enc_position > (-45*ONE_DEG_YAW_ENC_COUNT)){
-            l_backward(MOTOR_TURN_SPEED);
+            ramp_X(left_motor_speed,l_backward,RAMP_UP);
+            //l_backward(CALIB_MOTOR_SPEED);
         }
         else
         {
-            l_forward(0);
+            ramp_X(left_motor_speed,l_backward,RAMP_DOWN);
         }
         if(R_enc_position < (45*ONE_DEG_YAW_ENC_COUNT)){
-            r_forward(MOTOR_TURN_SPEED);   
+            ramp_X(right_motor_speed,r_forward,RAMP_UP);
+            //r_forward(CALIB_MOTOR_SPEED);   
         }
         else
         {
-            r_backward(0);
+            ramp_X(right_motor_speed,r_forward,RAMP_DOWN);
         }
         if ((L_enc_position <= (-45*ONE_DEG_YAW_ENC_COUNT)) && (R_enc_position >= (45*ONE_DEG_YAW_ENC_COUNT)))
         {
@@ -131,30 +147,61 @@ void self_calib_IMU(void){
         bool turn_back_0degs = false;
         while (turn_back_0degs != true )
         {   
+        //    wait_ms(75);
             feed_enc();
-            if(L_enc_position < (0*ONE_DEG_YAW_ENC_COUNT)){
-                l_forward(MOTOR_TURN_SPEED);
+            refresh_imu();
+            if(L_enc_position < (-5*ONE_DEG_YAW_ENC_COUNT)){
+                ramp_X(left_motor_speed,l_forward,RAMP_UP);
             }
-            else
+        else if(L_enc_position > (-5*ONE_DEG_YAW_ENC_COUNT))
             {
-                l_forward(0);
+                ramp_X(left_motor_speed,l_forward,RAMP_DOWN);
             }
-            if(R_enc_position > (0*ONE_DEG_YAW_ENC_COUNT)){
-                r_backward(MOTOR_TURN_SPEED);   
+            if((-R_enc_position) < (5*ONE_DEG_YAW_ENC_COUNT)){
+                ramp_X(right_motor_speed,r_backward,RAMP_UP);   
             }
-            else
+            else if(((-R_enc_position) < (5*ONE_DEG_YAW_ENC_COUNT)))
             {
-                r_backward(0);
+                ramp_X(right_motor_speed,r_backward,RAMP_DOWN);
             }
-            if ((L_enc_position >= (0*ONE_DEG_YAW_ENC_COUNT)) && (R_enc_position <= (0*ONE_DEG_YAW_ENC_COUNT)))
+            if ((L_enc_position >= (-5*ONE_DEG_YAW_ENC_COUNT)) && (5*ONE_DEG_YAW_ENC_COUNT))
             {
-                turn_back_180degs = true;
+                turn_back_0degs = true;
+                ramp_X(left_motor_speed,l_forward,RAMP_DOWN);
+                ramp_X(right_motor_speed,r_backward,RAMP_DOWN);
+        
             }
 
             #ifdef DEBUG
-            pc.printf("The yaw offset is %lf ,and muly fact is %lf", yaw_offset, imu_calib_factor );
+          
             #endif // DEBUG
         }
+
+      
+        bool correct_to_zero = false;
+        while (correct_to_zero != true)
+        {   
+            refresh_imu();
+            feed_enc();
+            if(L_enc_position > -5*ONE_DEG_YAW_ENC_COUNT){
+                ramp_X(left_motor_speed,l_backward,RAMP_UP);
+            }
+            else if(L_enc_position < -5*ONE_DEG_YAW_ENC_COUNT){
+                ramp_X(left_motor_speed,l_backward,RAMP_DOWN);    
+            }
+            if(R_enc_position < 5*ONE_DEG_YAW_ENC_COUNT){
+                ramp_X(right_motor_speed,r_forward,RAMP_UP);
+            }
+            else if(R_enc_position > 5*ONE_DEG_YAW_ENC_COUNT){
+                ramp_X(right_motor_speed,r_forward,RAMP_DOWN);    
+            }
+            if((L_enc_position < -5*ONE_DEG_YAW_ENC_COUNT) AND (R_enc_position > 5*ONE_DEG_YAW_ENC_COUNT)){
+                correct_to_zero = true;
+            }
+        }
+
+        
+        
     }
     else
     {
@@ -164,3 +211,12 @@ void self_calib_IMU(void){
     
     
 }
+
+
+
+
+
+
+
+
+
