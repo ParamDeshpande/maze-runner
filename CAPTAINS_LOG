@@ -240,3 +240,21 @@ FIXING BACK TO the ol' edfault code it works fine adding some tunings **WITHOUT*
 Writing STARTUP SELF CALIB SEQUENCE for IMU COZ offset changes everytime for every run according to refresh rate.
 2 things need to be done.
 Self calibration and main controller.
+
+Sunday 29/12/19
+2.10 PM 
+Deciding a step by step procedure for debugging.
+S1. Before beginning anything see CAPTAINS_LOG what was done previously.
+S2. analyse it, see if is complete or left partially.
+s2.2 If partial, complete it, comment it, commit it and push it.
+s3. Take a break every 30 mins wash eyes and stuff, every 15 mins walk.
+
+S4. Begin that days task, by writing what you will be doing that day.
+S4.2 Write as you complete wach sub task here.
+S5 complete, comment, commit and PUSH.
+S6 REPEAT 
+
+ TIP - COMPLETE,debug,commit,PUSH, small blocks of code say every 50 lines or so.
+ 
+
+
