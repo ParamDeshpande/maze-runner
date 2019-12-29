@@ -5,7 +5,7 @@
 #include "encoder.h"
 #include "Utils.h"
 
-#define DEBUG
+//#define DEBUG
 
 #define Stable_VARIANCE_YAW 100.0
 #define STABLE_BUF_SIZE 200
