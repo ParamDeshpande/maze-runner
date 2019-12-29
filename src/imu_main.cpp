@@ -32,6 +32,7 @@
 #include "../lib/MPU9250.h"
 #include "imu.h"
 
+//#define DEBUG
 // int imu_count = 0;
 //#include "N5110.h"
 
@@ -84,6 +85,7 @@ void imu_setup(void){
     
     mpu9250.resetMPU9250(); // Reset registers to default in preparation for device calibration
     mpu9250.MPU9250SelfTest(SelfTest); // Start by performing self test and reporting values
+    
     bt.printf("x-axis self test: acceleration trim within : %f % of factory value\n\r", SelfTest[0]);  
     bt.printf("y-axis self test: acceleration trim within : %f % of factory value\n\r", SelfTest[1]);  
     bt.printf("z-axis self test: acceleration trim within : %f % of factory value\n\r", SelfTest[2]);  
@@ -232,8 +234,9 @@ void refresh_imu(void)
     roll  *= 180.0f / PI;
 
     //countt
-    
+    #ifdef DEBUG
     pc.printf(" i = %d , Yaw: %f , yaw GYRO:%f  \n\r",Countt, yaw, yawGyro_rads);
+    #endif // DEBUG
     //bt.printf("average rate = %f\n\r", (float) sumCount/sum);
 //    sprintf(buffer, "YPR: %f %f %f", yaw, pitch, roll);
 //    lcd.printString(buffer, 0, 4);

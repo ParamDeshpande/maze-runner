@@ -3,7 +3,7 @@
 #include "../include/encoder.h"
 
 
-#define DEBUG
+//#define DEBUG
 
 //GLOBAL VARS
 int64_t L_enc_position = 0;
