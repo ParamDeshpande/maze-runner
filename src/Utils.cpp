@@ -2,6 +2,37 @@
 #include "../include/Utils.h"
 #include <string.h>
 #include "../include/commons.h"
+
+
+
+void ramp_UP_X( double & var, double x){
+  if(var <= x){
+    ++var;
+  }
+}
+
+void ramp_UP_X_RESET( double & var, double x){
+  if(var <= x){
+    ++var;
+  }
+}
+
+
+
+void ramp_DOWN_X( double & var, double x){
+ if (var >= x){
+    --var;
+ }  
+}
+
+
+
+void ramp_DOWN_X_RESET( double & var, double x){
+ if (var >= x){
+    --var;
+ }  
+}
+
 //#include "../include/multi-serial-command-listener.h"
 
 /*
