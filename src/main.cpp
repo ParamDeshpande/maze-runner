@@ -41,6 +41,8 @@
 #include "buzzer.h"
 #include "../include/sen_fusion.h"
 #include "calibration.h"
+#include "sch_isr.h"
+
 
 #define DEBUG_VIA_PRINTF 
 
@@ -78,9 +80,10 @@ int main(void) {
 
   /////*MAIN SETUP ENDS HERE*
   #ifdef DEBUG
-  encoder_init();
-  imu_setup();
-  self_calib_IMU();
+  //encoder_init();
+  //imu_setup();
+  //self_calib_IMU();
+  sEOS_Init(125);
   #endif // DEBUG     
 
   while(1) { 
@@ -105,7 +108,7 @@ int main(void) {
     
     now = t_global.read_us();
     t_global.stop();
-    delT = (now - last_time)/1000000.0; //sec
+    delT = (now - last_time);//1000000.0; //sec
     //wait_ms(50);
   //printf("Time elapsed is %lf \n", delT/1000000);
     ///*LOOP CODE ENDS HERE*

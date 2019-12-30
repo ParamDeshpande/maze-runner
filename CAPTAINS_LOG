@@ -278,5 +278,22 @@ still thinking ...
 8.09PM 
 Done with Task1 and Task2
 
+
 Starting Task3 BIG TASKK.
 
+9.10
+S1. Get max x speed and max w speed.
+GEt done by 9.30
+
+10.46PM
+MAX W dont know MAX Vel atleast about 100cm/sec  
+11.23 PM 
+MAX W 200degs/sec
+
+11.48 PM
+Things gone tough !!
+IMU reading not stable enough to get a good w value.
+
+30/12/19
+1.31 PM 
+TRying out the systick option.
