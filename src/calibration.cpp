@@ -6,10 +6,10 @@
 #include "Utils.h"
 
 //do not remove this debug or modify pf statements they slow down to a consirable range.
-#define DEBUG
+//#define DEBUG
 
 #define Stable_VARIANCE_YAW 100.0
-#define STABLE_BUF_SIZE 200
+#define STABLE_BUF_SIZE 2000
 
 // GLobal VARS
 double CALIB_MOTOR_SPEED = 10.0;
@@ -45,7 +45,7 @@ int variance(int a[], int n)
 void self_calib_IMU(void){
    
     //Check if stable readings ?
-
+    
     int value_buffer[STABLE_BUF_SIZE] = {0};
     for (int i = 0; i < STABLE_BUF_SIZE; i++){
         refresh_imu();
@@ -92,8 +92,10 @@ void self_calib_IMU(void){
         // Now it has turned 90 degs
         refresh_imu();
         imu_calib_factor = (90)/(yaw - yaw_offset);
+        #ifdef DEBUG
         pc.printf("The mult factor is %lf bias is %lf , yaw is %lf", imu_calib_factor,yaw_offset , yaw);
-    
+        #endif // DEBUG
+        
         
         //Now turn it back to -180 degs
         bool turn_back_180degs = false;
@@ -199,9 +201,8 @@ void self_calib_IMU(void){
             if((L_enc_position < -5*ONE_DEG_YAW_ENC_COUNT) AND (R_enc_position > 5*ONE_DEG_YAW_ENC_COUNT)){
                 correct_to_zero = true;
             }
-        }
+        }        
 
-        
         l_forward(0);
         r_backward(0);
     }

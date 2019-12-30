@@ -297,3 +297,12 @@ IMU reading not stable enough to get a good w value.
 30/12/19
 1.31 PM 
 TRying out the systick option.
+
+3.57PM 
+done with systick 
+Goodbye all printf statements.
+Need runtimes of each and every small and big function without and with the printf statements. ...:(
+
+Starting with the headaching IMU function.
+Hopefully doesnt trouble me now ?? Who knows ?
+

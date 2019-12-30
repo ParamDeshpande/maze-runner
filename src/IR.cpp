@@ -3,7 +3,7 @@
 #include "mbed.h"
 #include "../include/IR.h"
 
-#define DEBUG
+//#define DEBUG
 
 //*
 

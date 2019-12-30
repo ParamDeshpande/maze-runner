@@ -7,7 +7,7 @@
 
 
 
-#define DEBUG
+//#define DEBUG
 
 
 //Kalman Parameters
@@ -59,7 +59,7 @@ void calc_state(void){
     
 feed_enc();
 current_x = ((L_enc_position + R_enc_position)/(2.0*ONE_CM_WHEEL_ENC_COUNT)); //DIST IN cm
-current_vel = (current_x - prev_x)/(delT); //IN cm/sec
+current_vel = (current_x - prev_x)/(0.01); //IN cm/sec callec every 10ms 
 
 //refresh_imu();
 //map_yaw_range();
@@ -67,7 +67,7 @@ get_relative_yaw();
 double enc_diff = L_enc_position - R_enc_position;
 double yaw_encoder = enc_diff/ONE_DEG_YAW_ENC_COUNT;
 current_yaw = alpha_yaw_comp*yaw_encoder + (1- alpha_yaw_comp)*corrected_yaw ;
-current_w = (current_yaw - prev_yaw)/(delT);  //degs/sec
+current_w = (current_yaw - prev_yaw)/(0.01);  //degs/sec //called every 10ms
 
 #ifdef DEBUG
 pc.printf("Current time diff is %lf ", delT);
