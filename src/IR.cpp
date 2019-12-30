@@ -207,6 +207,18 @@ void IR::fire_and_get(void){
   #endif
 }
 
+ void IR::fire_and_read_front_IRs(void){
+   powerUP_Tx(front_l_tx);
+   powerUP_Tx(front_r_tx);
+   powerUP_Tx(diag_l_tx);
+   powerUP_Tx(diag_r_tx);    
+  
+  front_left_IR = get_Rx(front_l_rx);
+  //diag_left_IR =  get_Rx(diag_l_rx);
+  //diag_right_IR  =  get_Rx(diag_r_rx);
+  front_right_IR = get_Rx(front_r_rx);
+  
+ } 
 
 
   void IR::display_IR(void){

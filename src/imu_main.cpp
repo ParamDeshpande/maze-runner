@@ -47,13 +47,17 @@
 //imu_setup()
 //display_imu()
 //refresh_imu()
+
 //GLOBAL VARS 
 double yaw_offset = 0;
 double imu_calib_factor = 0;
 double corrected_yaw = 0;
+
+//Private vars
 static float sum = 0;
 static uint32_t sumCount = 0;
 static char buffer[14];
+static double yaw_bias_final = 0;
 
 
    MPU9250 mpu9250;
@@ -261,5 +265,10 @@ void refresh_imu(void)
 
 void get_relative_yaw(void){
   refresh_imu();
-  corrected_yaw = imu_calib_factor*(yaw - yaw_offset);
+  corrected_yaw = (imu_calib_factor*(yaw - yaw_offset)) - yaw_bias_final ;
+}
+
+void reset_IMU_bias(void){
+  refresh_imu();
+  yaw_bias_final = (imu_calib_factor*(yaw - yaw_offset));
 }

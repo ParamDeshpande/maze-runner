@@ -7,6 +7,8 @@
 
 void feed_enc(void);
 void encoder_init(void);
+void reset_encoders(void);
+
 
 //GLOBAL VARS
 extern int64_t L_enc_position;

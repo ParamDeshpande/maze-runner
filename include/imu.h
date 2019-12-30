@@ -6,6 +6,7 @@
 void imu_setup(void) ;
 void refresh_imu(void) ;
 void get_relative_yaw(void) ;
+void reset_IMU_bias(void);
 
 //Global vars////
 extern double corrected_yaw;

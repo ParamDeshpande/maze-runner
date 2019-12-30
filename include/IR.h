@@ -32,6 +32,7 @@ class IR{
 		void reset_params(void);
 		void map_IR(void) ;
 		void fire_and_get(void);
+		void fire_and_read_front_IRs(void);
 		void display_IR(void) ;
 //*/
 };
@@ -39,6 +40,7 @@ class IR{
 
 extern IR IR_module;
 extern int IR_readings[3][2];
+void fire_and_read_front_IRs(void);
 void display_IMU(void);
 
 // GLOBAL VARS

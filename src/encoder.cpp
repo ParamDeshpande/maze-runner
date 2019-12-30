@@ -154,6 +154,12 @@ static void check_overflow_tim2(void){
    
 }
 
+void reset_encoders(void){
+    ZeroEncoderCount_TIM1();
+    ZeroEncoderCount_TIM2();
+    L_enc_position = 0;
+    R_enc_position = 0;
+}
 
 void feed_enc(void) {
     
