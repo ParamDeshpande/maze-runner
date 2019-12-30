@@ -1,35 +1,4 @@
-/* xej-Nucleo-F401RE-and-HC05-Bluetooth.cpp
-  Test Nucleo-F401RE with HC05 Bluetooth adapter
-  
-  Wanted to use it for upload of telemetry
-  type a command and bt port and it will be echoed back
-  
-  pin-HC05  Pin-MBed
-   TX   --- PA_12
-   RX   --- PA_11
-   +5V  --- +5 on CN6
-               Also worked on 3.3V on CN6
-   GND  --- GND on CN6
-   STATE--- NC - not connected
-   EN   --- NC - not connected
-  
-   If you cycle power on mbed you may need to close 
-   and re-open the port connection which
-   is pretty easy when using RealTerm.
-  
-   tested with Honbay® Wireless Bluetooth Host Serial Transceiver Module   
-   Draws about 30mA when starting then drops back
-   to 10mA when idle with a jump to about 20 mA 
-   when transmitting.
-   
-   ***
-  * By Joseph Ellsworth CTO of A2WH
-  * Take a look at A2WH.com Producing Water from Air using Solar Energy
-  * March-2016 License: https://developer.mbed.org/handbook/MIT-Licence 
-  * Please contact us http://a2wh.com for help with custom design projects.
-  ***
-  
-*/
+
 #include "mbed.h"
 #include "commons.h"
 #include "multi-serial-command-listener.h"
@@ -42,12 +11,12 @@
 #include "../include/sen_fusion.h"
 #include "calibration.h"
 #include "sch_isr.h"
+#include "startup_seq.h"
+
+#define DEBUG_VIA_PRINTF
+#define DEBUG
 
 
-#define DEBUG_VIA_PRINTF 
-
-
-  //  myled= !myled;
 char myCommand[SCMD_MAX_CMD_LEN+1];
 
 int char_int =0;
@@ -57,7 +26,8 @@ void char_to_int(void){
 Serial bt(PA_11, PA_12);  // This one works
 Serial pc(USBTX, USBRX);     // WORKS AFTER CHANGING SOLDER BRIDGES
 
-#define DEBUG
+
+
 
 #ifdef DEBUG
 Timer t_global ;
@@ -77,38 +47,47 @@ int main(void) {
   ///*MAIN SETUP BEGINS HERE***********
   pc.baud(9600);
   bt.baud(9600);
-
+  startup_phase_1();
+  sEOS_Init();
   /////*MAIN SETUP ENDS HERE*
+
+
   #ifdef DEBUG
-  //encoder_init();
-  //imu_setup();
-  //self_calib_IMU();
-  sEOS_Init(125);
+  encoder_init();
+  imu_setup();
+  self_calib_IMU();
+   l_forward(0);
+   r_forward(0);
+   sEOS_Init();
+   wait(3);
   #endif // DEBUG     
 
   while(1) { 
     ///*LOOP CODE BEGINS HERE*
-      t_global.start();
+
+      t_global.start(); //PUT BREAKPOINT HERE
       last_time = t_global.read_us();
-      
+
     #ifdef DEBUG
-    //l_forward(100);
-    //r_forward(100);
+    
+    //imu_setup();
     //IR_module.fire_and_get();
     //calc_state();
     //refresh_imu();
     
     //get_relative_yaw();
-    //pc.printf("The yaw offset is %lf ,and muly fact is %lf and yaw is %lf ", yaw_offset, imu_calib_factor, corrected_yaw );
+    //pc.printf("The yaw offset is %lf ,and muly fact is %lf and yaw is %lf and delT is %llf ms \n\r", yaw_offset, imu_calib_factor, corrected_yaw , (delT/1000.0));
+    pc.printf("My current vel is %llf and currrent yaw is %llf w is %llf \r\n", current_vel,current_yaw,current_w);
     //l_forward(0);
     //r_backward(0);
-        //feed_enc();
+    //calc_state();
+    //feed_enc();
     //pc.printf(" \n\r");
     #endif // DEBUG
     
     now = t_global.read_us();
-    t_global.stop();
-    delT = (now - last_time);//1000000.0; //sec
+    t_global.stop();      
+    delT = (now - last_time);//1000000.0; //sec //PUT BREAKPOINT HERE 
     //wait_ms(50);
   //printf("Time elapsed is %lf \n", delT/1000000);
     ///*LOOP CODE ENDS HERE*

@@ -19,6 +19,11 @@
 #define OR || 
 #define AND &&
 #define builtin_led_Pin D13
+#define PUSH_BUTTON PC_13 
+
+
+
+
 //Need analog pin
 #define battery_Pin PC_4
 #define buzzer_Pin PB_13

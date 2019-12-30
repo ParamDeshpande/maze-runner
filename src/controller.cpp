@@ -6,8 +6,9 @@
 #include "../include/controller.h"
 #include "../include/actuator.h"
 
+#define refresh_rate 0.01 // Since period is 10MS
 
-#define x_Kp 10 
+#define x_Kp 1e-7
 #define x_Ki 1e5 
 #define x_Kd 0.0 
 #define w_Kp 0.0 
@@ -52,25 +53,25 @@ void main_controller(double desired_vel, double desired_w ){
     if(leftMotorPWM > 100 || leftMotorPWM<(-100) ||  rightMotorPWM > 100 || rightMotorPWM<(-100)){
       //DO NOTHING aka dont integrate passed outer limits
     }
-    else{
+    else if(((leftMotorPWM<100.0) AND (leftMotorPWM>-100.0)) AND ((rightMotorPWM<100.0) AND (rightMotorPWM>-100.0))){
     //PARAMS WITHIN LIMITS
-    x_Error += vel_Error*delT;//Integrating position.
-    ang_Error += w_Error*delT;//Integrating angle.
+    x_Error += vel_Error*refresh_rate;//Integrating position.
+    ang_Error += w_Error*refresh_rate;//Integrating angle.
     }
 
      //x_PD controller.
-    vel_pwm = x_Kp*vel_Error +  x_Ki*x_Error +  x_Kd*vel_Error/delT  ;
-    w_pwm = w_Kp*w_Error + w_Ki*ang_Error + w_Kd*ang_Error/delT ;
+    vel_pwm = x_Kp*vel_Error +  x_Ki*x_Error +  x_Kd*vel_Error/refresh_rate  ;
+    w_pwm = w_Kp*w_Error + w_Ki*ang_Error + w_Kd*ang_Error/refresh_rate ;
     
     
     leftMotorPWM = vel_pwm - w_pwm;
     rightMotorPWM = vel_pwm + w_pwm;
-    if(leftMotorPWM >0)
+    if(leftMotorPWM >0.0)
       l_forward(leftMotorPWM);
     else  //If negative
       l_backward(-leftMotorPWM);
     
-    if(rightMotorPWM >0)
+    if(rightMotorPWM >0.0)
       r_forward(rightMotorPWM);
     else  //If negative
       r_backward(-rightMotorPWM);

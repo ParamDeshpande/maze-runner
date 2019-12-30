@@ -9,11 +9,13 @@
 //#define DEBUG
 
 #define Stable_VARIANCE_YAW 100.0
-#define STABLE_BUF_SIZE 2000
+#define STABLE_BUF_SIZE 150
 
 // GLobal VARS
 double CALIB_MOTOR_SPEED = 10.0;
 
+// Static vars 
+static float new_angle = 0.0;
 
 //PRIVATE FUNCTIONS 
 int variance(int [], int); 
@@ -45,7 +47,7 @@ int variance(int a[], int n)
 void self_calib_IMU(void){
    
     //Check if stable readings ?
-    
+    wait(2);
     int value_buffer[STABLE_BUF_SIZE] = {0};
     for (int i = 0; i < STABLE_BUF_SIZE; i++){
         refresh_imu();
@@ -131,19 +133,19 @@ void self_calib_IMU(void){
         //Recheck if calib factor gives correct readings 
         // ie if calibration is successful 
         refresh_imu();
-        float new_angle = imu_calib_factor*(yaw - yaw_offset); 
-        if ((new_angle < -60) && (new_angle > -120))
+        new_angle = imu_calib_factor*(yaw - yaw_offset); 
+        if ((new_angle < -70) && (new_angle > -110))
         {
-        //victory beep
-        buzzer_on();
-        wait_ms(300);
-        buzzer_off();
-        wait_ms(300);
-        
-        buzzer_on();
-        wait_ms(300);
-        buzzer_off();
-        wait_ms(300);
+            //victory beep
+            buzzer_on();
+            wait_ms(500);
+            buzzer_off();
+            wait_ms(500);
+
+            buzzer_on();
+            wait_ms(500);
+            buzzer_off();
+            wait_ms(500);
         
         }
         
@@ -156,7 +158,7 @@ void self_calib_IMU(void){
             if(L_enc_position < (-5*ONE_DEG_YAW_ENC_COUNT)){
                 ramp_X(left_motor_speed,l_forward,RAMP_UP);
             }
-        else if(L_enc_position > (-5*ONE_DEG_YAW_ENC_COUNT))
+            else if(L_enc_position > (-5*ONE_DEG_YAW_ENC_COUNT))
             {
                 ramp_X(left_motor_speed,l_forward,RAMP_DOWN);
             }
@@ -179,11 +181,10 @@ void self_calib_IMU(void){
           
             #endif // DEBUG
         }
-
-      
+        
+        
         bool correct_to_zero = false;
-        while (correct_to_zero != true)
-        {   
+        while (correct_to_zero != true){   
             refresh_imu();
             feed_enc();
             if(L_enc_position > -5*ONE_DEG_YAW_ENC_COUNT){
@@ -202,9 +203,38 @@ void self_calib_IMU(void){
                 correct_to_zero = true;
             }
         }        
+        refresh_imu();
+        new_angle = imu_calib_factor*(yaw - yaw_offset); 
+        if((new_angle < 15) && (new_angle > -15))
+        {
+            //victory beep
+            buzzer_on();
+            wait_ms(300);
+            buzzer_off();
+            wait_ms(300);
 
-        l_forward(0);
-        r_backward(0);
+            buzzer_on();
+            wait_ms(300);
+            buzzer_off();
+            wait_ms(300);
+
+            l_forward(0);
+            r_forward(0);
+        }
+        else{
+            //buzzer_on();
+            while ((new_angle < 15) && (new_angle > -15))
+            {
+            refresh_imu();
+            new_angle = imu_calib_factor*(yaw - yaw_offset);
+            buzzer_on();
+             
+        }
+            buzzer_off();
+            l_forward(0);
+            r_forward(0);
+        }
+
     }
     else
     {

@@ -21,7 +21,8 @@ extern Timer t_global ;
 #define TRUE true
 #define FALSE false
 
-
+#define PRESSED true
+#define NOT_PRESSED false
 
 //Super important dont change UL.
 

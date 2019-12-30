@@ -306,3 +306,12 @@ Need runtimes of each and every small and big function without and with the prin
 Starting with the headaching IMU function.
 Hopefully doesnt trouble me now ?? Who knows ?
 
+6.41 
+was strcuk in the rolling chair Didnt had aclue as to what was doing !!
+Now reverified and modified the IMU calib code, according to new needs ( hopefully )
+
+NOW I HAVE CURRENT W and current vel now moving to the main controller.
+After the break ..
+
+7.01 PM 
+init PID 
