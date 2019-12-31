@@ -9,10 +9,10 @@
 //#define DEBUG
 
 #define Stable_VARIANCE_YAW 100.0
-#define STABLE_BUF_SIZE 150
+#define STABLE_BUF_SIZE 2000
 
 // GLobal VARS
-double CALIB_MOTOR_SPEED = 10.0;
+double CALIB_MOTOR_SPEED = 16.0;
 
 // Static vars 
 static float new_angle = 0.0;
@@ -134,7 +134,7 @@ void self_calib_IMU(void){
         // ie if calibration is successful 
         refresh_imu();
         new_angle = imu_calib_factor*(yaw - yaw_offset); 
-        if ((new_angle < -70) && (new_angle > -110))
+        if ((new_angle < -65) && (new_angle > -115))
         {
             //victory beep
             buzzer_on();
@@ -182,7 +182,7 @@ void self_calib_IMU(void){
             #endif // DEBUG
         }
         
-        
+        /*
         bool correct_to_zero = false;
         while (correct_to_zero != true){   
             refresh_imu();
@@ -202,38 +202,39 @@ void self_calib_IMU(void){
             if((L_enc_position < -5*ONE_DEG_YAW_ENC_COUNT) AND (R_enc_position > 5*ONE_DEG_YAW_ENC_COUNT)){
                 correct_to_zero = true;
             }
-        }        
+        }        */
         refresh_imu();
         new_angle = imu_calib_factor*(yaw - yaw_offset); 
         if((new_angle < 15) && (new_angle > -15))
         {
             //victory beep
             buzzer_on();
-            wait_ms(300);
+            wait_ms(500);
             buzzer_off();
-            wait_ms(300);
+            wait_ms(500);
 
             buzzer_on();
-            wait_ms(300);
+            wait_ms(500);
             buzzer_off();
-            wait_ms(300);
+            wait_ms(500);
 
             l_forward(0);
             r_forward(0);
         }
         else{
-            //buzzer_on();
-            while ((new_angle < 15) && (new_angle > -15))
-            {
-            refresh_imu();
-            new_angle = imu_calib_factor*(yaw - yaw_offset);
             buzzer_on();
-             
+            // Manually set it in range.
         }
+        while ((new_angle > 15) OR (new_angle < -15)){
+                l_forward(0);
+                r_forward(0);
+                refresh_imu();
+                new_angle = imu_calib_factor*(yaw - yaw_offset);
+                buzzer_on();
+            }
             buzzer_off();
             l_forward(0);
             r_forward(0);
-        }
 
     }
     else

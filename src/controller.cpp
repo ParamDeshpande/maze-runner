@@ -7,13 +7,16 @@
 #include "../include/actuator.h"
 
 #define refresh_rate 0.01 // Since period is 10MS
+#define x_Kp_crit (0.78e2)
+#define w_Kp_crit (0.78e2)
 
-#define x_Kp 1e-7
-#define x_Ki 1e5 
-#define x_Kd 0.0 
-#define w_Kp 0.0 
-#define w_Ki 0.0 
-#define w_Kd 0.0 
+
+#define x_Kp (46.8e0) //found stability for 0.78e2
+#define x_Ki (39e0)
+#define x_Kd (9.75e0)
+#define w_Kp (0e0)
+#define w_Ki (0e0)
+#define w_Kd (0e0) 
 
 //global variables
 double current_x = 0;

@@ -45,21 +45,14 @@ void commandCallback(char *, void *);
 
 int main(void) {
   ///*MAIN SETUP BEGINS HERE***********
-  pc.baud(9600);
+  pc.baud(115200);
   bt.baud(9600);
   startup_phase_1();
-  sEOS_Init();
+  
   /////*MAIN SETUP ENDS HERE*
 
 
   #ifdef DEBUG
-  encoder_init();
-  imu_setup();
-  self_calib_IMU();
-   l_forward(0);
-   r_forward(0);
-   sEOS_Init();
-   wait(3);
   #endif // DEBUG     
 
   while(1) { 
@@ -77,9 +70,9 @@ int main(void) {
     
     //get_relative_yaw();
     //pc.printf("The yaw offset is %lf ,and muly fact is %lf and yaw is %lf and delT is %llf ms \n\r", yaw_offset, imu_calib_factor, corrected_yaw , (delT/1000.0));
-    pc.printf("My current vel is %llf and currrent yaw is %llf w is %llf \r\n", current_vel,current_yaw,current_w);
+     //pc.printf("My current vel is %llf and currrent yaw is %llf w is %llf \n", current_vel,current_yaw,current_w);
     //l_forward(0);
-    //r_backward(0);
+    //r_backward(5);
     //calc_state();
     //feed_enc();
     //pc.printf(" \n\r");

@@ -330,3 +330,21 @@ Todays AIMs.
 
 s1. 
 Put the startup task bool quote in ISR.
+
+Getting sidelined  in self calib.cpp
+
+1.52 PM
+a break.. 
+30 mins 
+
+4.57PM 
+Still not able to get PId vals for x and w ..
+
+Trying newer approach
+Slower but w/o mods 
+s1. try to elim yaw completely from pictute 
+
+7.34 PM 
+Dont know what to do ?
+Did calibrate PID for linear vals.
+Now trying tune PID for yaw vals.
