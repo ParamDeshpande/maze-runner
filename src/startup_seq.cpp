@@ -12,7 +12,9 @@
 #include "global.h"
 
 #define FINGER_THOLD 50.0
+
 //Global vars 
+bool startup_seq_status = WAITING;
 
 //Private vars
 
@@ -36,6 +38,7 @@ void startup_phase_1(void){
     IR_module.fire_and_read_front_IRs();
   }
   wait_ms(500.0);
+  startup_seq_status = COMPLETE ;
 }
 
 

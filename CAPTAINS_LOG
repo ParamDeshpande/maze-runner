@@ -321,3 +321,12 @@ init PID
 Got the lipo charger  
 Finished with startup sequence added a few things 
 Today with PID in the morning...
+
+11.31AM 
+continuing with PID,
+Todays AIMs.
+1. Get Finally done with PID.
+2. Start testing Floodfill.
+
+s1. 
+Put the startup task bool quote in ISR.

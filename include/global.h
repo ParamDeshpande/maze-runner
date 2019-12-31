@@ -24,6 +24,9 @@ extern Timer t_global ;
 #define PRESSED true
 #define NOT_PRESSED false
 
+#define WAITING false
+#define COMPLETE true
+
 //Super important dont change UL.
 
 #define FILLARRAY(a,n) a[0]=n, memcpy( ((char*)a)+sizeof(a[0]), a, sizeof(a)-sizeof(a[0]) );
