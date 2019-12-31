@@ -35,7 +35,7 @@ static void map_yaw_range(void);
 //PRIVATE VARS
 static double prev_x = 0;
 static double prev_yaw = 0;
-static const float alpha_yaw_comp = 0.0; // IE 0.6 for encoders 0.4 for IMU
+static const float alpha_yaw_comp = 0.2; // IE 0.6 for encoders 0.4 for IMU
 
 
 //MAKES SURE MY ANGLES ARE RESTRICTED from -65 to 65 degs.

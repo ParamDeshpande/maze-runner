@@ -31,6 +31,7 @@ void startup_phase_1(void){
   self_calib_IMU();
   l_forward(0);
   r_forward(0);
+  sEOS_Init();
   while(check_button_press() != (PRESSED) );
   reset_encoders();
   reset_IMU_bias();
