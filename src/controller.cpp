@@ -14,9 +14,9 @@
 #define x_Kp (46.8e0) //found stability for 0.78e2
 #define x_Ki (39e0)
 #define x_Kd (9.75e0)
-#define w_Kp (0e0)
-#define w_Ki (0e0)
-#define w_Kd (0e0) 
+#define w_Kp (46.8e0)
+#define w_Ki (39e0)
+#define w_Kd (9.75e0) 
 
 //global variables
 double current_x = 0;

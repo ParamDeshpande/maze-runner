@@ -3,7 +3,7 @@
 #include "mbed.h"
 #include "../include/IR.h"
 
-//#define DEBUG
+#define DEBUG
 
 //*
 
@@ -202,11 +202,12 @@ void IR::fire_and_get(void){
   //powerUP_Tx(diag_r_tx);    
   powerUP_Tx(side_l_tx);   
   //powerUP_Tx(side_r_tx);    
-
+  side_left_IR =  get_Rx(side_l_rx);
 
   #endif
 }
 
+// To begin the run
  void IR::fire_and_read_front_IRs(void){
    powerUP_Tx(front_l_tx);
    powerUP_Tx(front_r_tx);
@@ -217,7 +218,7 @@ void IR::fire_and_get(void){
   //diag_left_IR =  get_Rx(diag_l_rx);
   //diag_right_IR  =  get_Rx(diag_r_rx);
   front_right_IR = get_Rx(front_r_rx);
-  
+  side_left_IR =  get_Rx(side_l_rx);
  } 
 
 

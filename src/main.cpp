@@ -39,14 +39,18 @@ static double last_time = 0;
 
 double delT ;  
 
+DigitalOut myled5(LED1);
+void toggle_LED2(void){
+    myled5 = !myled5;
+}
 
 //FUNCTION PROTOTYPES
 void commandCallback(char *, void *); 
 
 int main(void) {
   ///*MAIN SETUP BEGINS HERE***********
-  pc.baud(115200);
-  bt.baud(9600);
+  //pc.baud(115200);
+  //bt.baud(9600);
   startup_phase_1();
   
   /////*MAIN SETUP ENDS HERE*
@@ -64,10 +68,9 @@ int main(void) {
     #ifdef DEBUG
     
     //imu_setup();
-    //IR_module.fire_and_get();
+    IR_module.fire_and_get();
     //calc_state();
     //refresh_imu();
-    
     //get_relative_yaw();
     //pc.printf("The yaw offset is %lf ,and muly fact is %lf and yaw is %lf and delT is %llf ms \n\r", yaw_offset, imu_calib_factor, corrected_yaw , (delT/1000.0));
      //pc.printf("My current vel is %llf and currrent yaw is %llf w is %llf \n", current_vel,current_yaw,current_w);
