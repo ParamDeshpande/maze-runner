@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include "Maze.h"
 
-
+// modified SPI to S_P_I coz of macro
 
 // Stack Constructor
 Stack * new_Stack() {
 
   Stack * this_stack = (Stack *) malloc(sizeof(Stack));
 
-  this_stack->properties[SPI] = 0;
+  this_stack->properties[S_P_I] = 0;
   this_stack->properties[SSI] = STACKSIZE;
 
   return this_stack;
@@ -33,9 +33,9 @@ void delete_Stack (Stack ** spp) {
 // Checks if this_stack is empty
 int is_empty_Stack (Stack * this_stack) {
 
-  //printf("%d\n", this_stack->properties[SPI]);
+  //printf("%d\n", this_stack->properties[S_P_I]);
 
-  if (this_stack->properties[SPI] == 0)
+  if (this_stack->properties[S_P_I] == 0)
     return 1;
   else return 0;
 }
@@ -46,11 +46,11 @@ void pop (Stack * this_stack, Node ** npp) {
 
   short index;
 
-  index = this_stack->properties[SPI] - 1;
+  index = this_stack->properties[S_P_I] - 1;
 
   *npp = this_stack->the_stack[index];
 
-  this_stack->properties[SPI] -= 1;
+  this_stack->properties[S_P_I] -= 1;
 
 }
 
@@ -59,11 +59,11 @@ void push (Stack * this_stack, Node * this_node) {
 
   short index;
 
-  index = this_stack->properties[SPI];
+  index = this_stack->properties[S_P_I];
 
   this_stack->the_stack[index] = this_node;
 
-  this_stack->properties[SPI] += 1;
+  this_stack->properties[S_P_I] += 1;
 }
 
 

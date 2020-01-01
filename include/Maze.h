@@ -34,7 +34,7 @@
 #define DOWN this_node->down
 
 // Stack Constants
-#define SPI 1			// Stack Pointer Index
+#define S_P_I 1			// Stack Pointer Index // Coz SPI macro in stm32 
 #define SSI 0 			// Stack Size Index
 #define STACK_OFFSET 2
 #define STACKSIZE 80

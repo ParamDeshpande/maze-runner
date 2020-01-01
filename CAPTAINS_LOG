@@ -348,3 +348,15 @@ s1. try to elim yaw completely from pictute
 Dont know what to do ?
 Did calibrate PID for linear vals.
 Now trying tune PID for yaw vals.
+
+1/01/20
+12.09AM
+Happy new year buddy.
+Nice fireworks.
+
+ditching the PID things moving to flood fill, using simple while loop for turning and simple l_forward , r_forward for st path.
+Assuming I have all the hware stuff working good and sexy.
+Lets begin :)
+.
+.
+.
