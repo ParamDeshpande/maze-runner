@@ -9,7 +9,7 @@
 //#define DEBUG
 
 #define Stable_VARIANCE_YAW 100.0
-#define STABLE_BUF_SIZE 2000
+#define STABLE_BUF_SIZE 150
 
 // GLobal VARS
 double CALIB_MOTOR_SPEED = 16.0;

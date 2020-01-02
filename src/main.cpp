@@ -68,7 +68,7 @@ int main(void) {
     #ifdef DEBUG
     
     //imu_setup();
-    IR_module.fire_and_get();
+    //IR_module.fire_and_get();
     //calc_state();
     //refresh_imu();
     //get_relative_yaw();
